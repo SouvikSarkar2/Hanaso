@@ -67,11 +67,15 @@ async function CrudShowcase() {
   if (!session?.user) return null;
 
   const latestPost = await api.post.getLatest();
+  const secretMessage = await api.post.hello({ text: "souvik" });
 
   return (
     <div className="w-full max-w-xs">
       {latestPost ? (
-        <p className="truncate">Your most recent post: {latestPost.name}</p>
+        <>
+          <p className="truncate">Your most recent post: {latestPost.name}</p>
+          <p>{secretMessage.greeting}</p>
+        </>
       ) : (
         <p>You have no posts yet.</p>
       )}
