@@ -1,86 +1,46 @@
-import Link from "next/link";
-
-import { CreatePost } from "~/app/_components/create-post";
 import { getServerAuthSession } from "~/server/auth";
 import { api } from "~/trpc/server";
+import ThemeSwitch from "./_components/ThemeSwitch";
+import { MoveUpRight } from "lucide-react";
 
 export default async function Home() {
   const hello = await api.post.hello({ text: "from tRPC" });
   const session = await getServerAuthSession();
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
-      <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-        <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
-          Create <span className="text-[hsl(280,100%,70%)]">T3</span> App
-        </h1>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
-          <Link
-            className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 hover:bg-white/20"
-            href="https://create.t3.gg/en/usage/first-steps"
-            target="_blank"
-          >
-            <h3 className="text-2xl font-bold">First Steps →</h3>
-            <div className="text-lg">
-              Just the basics - Everything you need to know to set up your
-              database and authentication.
+    <div className="flex h-[100vh] w-[100vw] items-center justify-center bg-black duration-500 dark:bg-[#FFFAE6]">
+      <div className=" flex h-[95%] w-[98%] flex-col items-center justify-center rounded-3xl bg-[#FFFAE6] dark:bg-black dark:text-[#FFFAE6]">
+        <div className="flex h-[15%] w-full flex-row justify-between px-10">
+          <div className="flex flex-row items-center justify-center gap-24 p-2">
+            <div className="font-[Urbanist] text-3xl font-bold">HANASO</div>
+            <div className="flex flex-row gap-4 font-[Oswald] text-xl font-light">
+              <div>Business</div>
+              <div>Pricing</div>
+              <div>Services</div>
+              <div>Solutions</div>
+              <div>FAQ</div>
             </div>
-          </Link>
-          <Link
-            className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 hover:bg-white/20"
-            href="https://create.t3.gg/en/introduction"
-            target="_blank"
-          >
-            <h3 className="text-2xl font-bold">Documentation →</h3>
-            <div className="text-lg">
-              Learn more about Create T3 App, the libraries it uses, and how to
-              deploy it.
+          </div>
+          <div className="flex items-center justify-center gap-4">
+            <div>
+              <ThemeSwitch />
             </div>
-          </Link>
-        </div>
-        <div className="flex flex-col items-center gap-2">
-          <p className="text-2xl text-white">
-            {hello ? hello.greeting : "Loading tRPC query..."}
-          </p>
-
-          <div className="flex flex-col items-center justify-center gap-4">
-            <p className="text-center text-2xl text-white">
-              {session && <span>Logged in as {session.user?.name}</span>}
-            </p>
-            <Link
-              href={session ? "/api/auth/signout" : "/api/auth/signin"}
-              className="rounded-full bg-white/10 px-10 py-3 font-semibold no-underline transition hover:bg-white/20"
-            >
-              {session ? "Sign out" : "Sign in"}
-            </Link>
+            <div className="flex items-center justify-center">
+              <div className="rounded-full border-[1px] border-black px-4 py-2 font-semibold dark:border-[#FFFAE6]">
+                Register
+              </div>
+              <div className="rounded-full bg-black p-2 text-[#FFFAE6] dark:bg-[#FFFAE6] dark:text-black">
+                <MoveUpRight />
+              </div>
+            </div>
           </div>
         </div>
+        <div className="h-[70%] w-full "></div>
+        <div className="h-[15%] w-full "></div>
 
-        <CrudShowcase />
+        <div></div>
+        <div></div>
       </div>
-    </main>
-  );
-}
-
-async function CrudShowcase() {
-  const session = await getServerAuthSession();
-  if (!session?.user) return null;
-
-  const latestPost = await api.post.getLatest();
-  const secretMessage = await api.post.hello({ text: "souvik" });
-
-  return (
-    <div className="w-full max-w-xs">
-      {latestPost ? (
-        <>
-          <p className="truncate">Your most recent post: {latestPost.name}</p>
-          <p>{secretMessage.greeting}</p>
-        </>
-      ) : (
-        <p>You have no posts yet.</p>
-      )}
-
-      <CreatePost />
     </div>
   );
 }

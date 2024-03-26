@@ -48,6 +48,31 @@ export const users = createTable("user", {
   image: varchar("image", { length: 255 }),
 });
 
+export const conversations = createTable("conversation", {
+  id: varchar("id", { length: 255 }).notNull().primaryKey(),
+  createdBy: varchar("createdBy", { length: 255 })
+    .references(() => users.id)
+    .notNull(),
+  createdAt: timestamp("createdAt", { mode: "date" }).default(
+    sql`CURRENT_TIMESTAMP`,
+  ),
+});
+
+export const messages = createTable("message", {
+  id: varchar("id", { length: 255 }).notNull().primaryKey(),
+  conversationId: varchar("conversationId", { length: 255 })
+    .references(() => conversations.id)
+    .notNull(),
+  senderId: varchar("senderId", { length: 255 })
+    .references(() => users.id)
+    .notNull(),
+  recipientId: varchar("recipientId", { length: 255 })
+    .references(() => users.id)
+    .notNull(),
+  content: varchar("content", { length: 255 }),
+  sentAt: timestamp("sentAt", { mode: "date" }).default(sql`CURRENT_TIMESTAMP`),
+});
+
 export const usersRelations = relations(users, ({ many }) => ({
   accounts: many(accounts),
 }));
