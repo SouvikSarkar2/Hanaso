@@ -26,7 +26,7 @@ export default async function Home() {
             </div>
             <div className="flex items-center justify-center">
               <Link
-                href={"/home"}
+                href={"/chats"}
                 className="cursor-pointer rounded-full border-[1px] border-black px-4 py-2 font-semibold text-black duration-500 hover:bg-black hover:text-[#FFFAE6] dark:border-[#FFFAE6] dark:text-[#FFFAE6] dark:hover:bg-[#FFFAE6] dark:hover:text-black"
               >
                 {session ? "Enter" : "Register"}
@@ -69,7 +69,7 @@ export default async function Home() {
             </div>
             <div className="flex w-full items-start justify-start px-2 py-4">
               <Link
-                href={"/home"}
+                href={"/chats"}
                 className="my-4 rounded-full bg-black px-4 py-2 text-[#FFFAE6] dark:bg-[#FFFAE6] dark:text-black"
               >
                 GET STARTED
@@ -97,7 +97,7 @@ export default async function Home() {
         </div>
         <div className="flex h-[15%] w-full items-center justify-center">
           <div className="inline-flex h-full w-full flex-nowrap overflow-hidden ">
-            <ul className="animate-infinite-scroll flex items-center justify-center md:justify-start [&_li]:mx-8">
+            <ul className="flex animate-infinite-scroll items-center justify-center md:justify-start [&_li]:mx-8">
               {Tags.map((el, i) => (
                 <li key={i}>
                   <span className="rounded-full  px-4 py-2 text-xl font-light outline-dashed outline-1  dark:outline-[#FFFAE6]">
