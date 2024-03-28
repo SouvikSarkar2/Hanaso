@@ -40,18 +40,20 @@ export const posts = createTable(
 
 export const users = createTable("user", {
   id: varchar("id", { length: 255 }).notNull().primaryKey(),
-  name: varchar("name", { length: 255 }),
+  name: varchar("name", { length: 255 }).notNull().default("User"),
   email: varchar("email", { length: 255 }).notNull(),
   emailVerified: timestamp("emailVerified", {
     mode: "date",
   }).default(sql`CURRENT_TIMESTAMP`),
-  image: varchar("image", { length: 255 }),
+  image: varchar("image", { length: 255 }).notNull().default(""),
   friends: text("friends")
     .array()
-    .default(sql`'{}'`),
+    .default(sql`'{}'`)
+    .notNull(),
   friendRequests: text("friendRequests")
     .array()
-    .default(sql`'{}'`),
+    .default(sql`'{}'`)
+    .notNull(),
 });
 
 export const conversations = createTable("conversation", {
