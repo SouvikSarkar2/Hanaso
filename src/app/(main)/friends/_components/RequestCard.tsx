@@ -37,7 +37,7 @@ const RequestCard = ({
   }
 
   return (
-    <div className=" flex h-[70px] w-[320px] overflow-hidden rounded-xl bg-[#00000021]">
+    <div className=" flex h-[70px] w-[320px] overflow-hidden rounded-xl bg-[#00000021] dark:bg-[#FFFAE621]">
       <div className="h-full w-[22%] p-2">
         <div className="relative h-full w-full overflow-hidden rounded-xl ">
           <Image src={img} alt="" fill />

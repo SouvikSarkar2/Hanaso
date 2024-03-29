@@ -6,7 +6,7 @@ import {
   protectedProcedure,
   publicProcedure,
 } from "~/server/api/trpc";
-import { users } from "~/server/db/schema";
+import { conversations, messages, users } from "~/server/db/schema";
 
 export const friendRouter = createTRPCRouter({
   deleteFriend: protectedProcedure
@@ -41,7 +41,30 @@ export const friendRouter = createTRPCRouter({
         .update(users)
         .set({ friends: updatedUser2FriendList })
         .where(eq(users.id, input.Id2));
+      //finding the conversation between them
+      const conversationId = await ctx.db.query.conversations.findFirst({
+        where: sql`
+          ARRAY[${input.Id1}, ${input.Id2}]::text[] <@ users
+      `,
+      });
+
+      if (!conversationId) {
+        return;
+      }
+      //delete the messages including the conversationId
+      await ctx.db
+        .delete(messages)
+        .where(eq(messages.conversationId, conversationId.id));
+
+      //deleting the conversation itself
+
+      await ctx.db.delete(conversations).where(
+        sql`
+          ARRAY[${input.Id1}, ${input.Id2}]::text[] <@ users
+      `,
+      );
     }),
+
   request: protectedProcedure
     .input(z.object({ senderId: z.string(), receiverId: z.string() }))
     .mutation(async ({ ctx, input }) => {
@@ -117,6 +140,13 @@ export const friendRouter = createTRPCRouter({
           friends: newSenderFriendList,
         })
         .where(eq(users.id, input.senderId));
+
+      //add a new conversation
+
+      await ctx.db.insert(conversations).values({
+        users: [input.receiverId, input.senderId],
+        id: sql`uuid_generate_v4()`,
+      });
     }),
   rejectRequest: protectedProcedure
     .input(z.object({ senderId: z.string(), receiverId: z.string() }))

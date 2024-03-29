@@ -10,6 +10,7 @@ const page = async () => {
   if (!session) {
     return;
   }
+
   const user = await api.user.find({ id: session.user.id });
   console.log(user);
 

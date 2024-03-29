@@ -3,6 +3,7 @@ import { getServerAuthSession } from "~/server/auth";
 import Sidebar from "./_components/Sidebar";
 import { useUserIdStore } from "~/store";
 import UserIdSetter from "../_components/userIdSetter";
+import { socket } from "~/socket";
 
 export default async function MainLayout({
   children,
@@ -14,6 +15,8 @@ export default async function MainLayout({
   if (!session) {
     redirect("/api/auth/signin");
   }
+  // socket.connect();
+
   return (
     <div className="flex h-[100vh] w-[100vw] items-center justify-center bg-[#FFFAE6] dark:bg-black">
       <UserIdSetter id={session.user.id} />

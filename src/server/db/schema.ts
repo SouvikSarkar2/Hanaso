@@ -58,8 +58,9 @@ export const users = createTable("user", {
 
 export const conversations = createTable("conversation", {
   id: varchar("id", { length: 255 }).notNull().primaryKey(),
-  createdBy: varchar("createdBy", { length: 255 })
-    .references(() => users.id)
+  users: text("users")
+    .array()
+    .default(sql`'{}'`)
     .notNull(),
   createdAt: timestamp("createdAt", { mode: "date" }).default(
     sql`CURRENT_TIMESTAMP`,
