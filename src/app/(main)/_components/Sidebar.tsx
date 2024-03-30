@@ -18,7 +18,7 @@ const Sidebar = () => {
   const [isActive, setIsActive] = useState<string>(pathname);
 
   return (
-    <div className="flex h-full w-[6%] flex-col items-center justify-between py-8 pl-2 font-[Urbanist] text-sm text-[#FFFAE6] dark:text-black">
+    <div className="font-urbanist flex h-full w-[6%] flex-col items-center justify-between rounded-3xl bg-[#202022] py-8 pl-2 text-sm text-white dark:bg-[#F2EFE6] dark:text-black">
       <Link href={"/"} className="flex w-full items-center justify-center ">
         <Bot size={40} />
       </Link>
@@ -89,7 +89,7 @@ const Sidebar = () => {
       </div>
       <Link
         href={"/api/auth/signout"}
-        className="flex cursor-pointer flex-col items-center justify-center gap-1 rounded-2xl px-4 py-1 font-semibold duration-500 hover:bg-red-500 hover:text-black "
+        className="flex cursor-pointer flex-col items-center justify-center gap-1 rounded-2xl  px-4 py-1 font-semibold duration-500 hover:bg-red-500 hover:text-black "
       >
         <div>
           <Plug size={24} />

@@ -15,7 +15,7 @@ export default async function Home() {
       <div className=" flex h-[95%] w-[98%] flex-col items-center justify-center rounded-3xl bg-[#FFFAE6] dark:bg-black dark:text-[#FFFAE6]">
         <div className="flex h-[15%] w-full flex-row justify-between px-10">
           <div className="flex flex-row items-center justify-center gap-24 p-2">
-            <div className="flex items-center justify-center gap-2 font-[Urbanist] text-3xl font-bold">
+            <div className="font-urbanist flex items-center justify-center gap-2 text-3xl font-bold">
               <Bot size={34} />
               HANASO
             </div>
@@ -46,7 +46,7 @@ export default async function Home() {
               <div className="font-medium uppercase">Trusted Users</div>
             </div>
             <div className="w-full">
-              <div className="py-10 font-[Urbanist] text-6xl">
+              <div className="font-urbanist py-10 text-5xl">
                 &quot;Where words meet, connections flourish.&quot;
               </div>
             </div>

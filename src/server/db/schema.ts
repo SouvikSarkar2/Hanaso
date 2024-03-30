@@ -78,8 +78,10 @@ export const messages = createTable("message", {
   recipientId: varchar("recipientId", { length: 255 })
     .references(() => users.id)
     .notNull(),
-  content: varchar("content", { length: 255 }),
-  sentAt: timestamp("sentAt", { mode: "date" }).default(sql`CURRENT_TIMESTAMP`),
+  content: varchar("content", { length: 255 }).notNull(),
+  sentAt: timestamp("sentAt", { mode: "date" })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
 });
 
 export const usersRelations = relations(users, ({ many }) => ({

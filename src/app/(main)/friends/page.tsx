@@ -12,7 +12,7 @@ const page = async () => {
   }
 
   const user = await api.user.find({ id: session.user.id });
-  console.log(user);
+  /* console.log(user); */
 
   if (!user) {
     return <div>Loading...</div>;
@@ -24,7 +24,7 @@ const page = async () => {
     <div className="flex h-full w-full items-center justify-center">
       <div className="flex h-[95%] w-[48%] flex-col items-start justify-start  pt-4">
         <div className="pl-2 text-3xl font-bold">Friends</div>
-        <div className="flex flex-col items-start justify-start gap-6 pl-2 pt-6">
+        <div className="flex flex-wrap items-start justify-start gap-6 pl-2 pt-6">
           {user.friends.map((id) => (
             <Friend key={id} id={id} currUserId={userId} />
           ))}
