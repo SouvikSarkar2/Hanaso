@@ -1,11 +1,3 @@
-import {
-  EllipsisVertical,
-  Mic,
-  Paperclip,
-  Phone,
-  Search,
-  Send,
-} from "lucide-react";
 import { useEffect, useState } from "react";
 import { Input } from "~/components/ui/input";
 import { socket } from "~/socket";
@@ -14,13 +6,14 @@ import { api } from "~/trpc/react";
 import Chat2 from "./Chat2";
 
 const Chat = ({ id }: { id: string }) => {
-  const { userId } = useUserIdStore();
-  /* const [message, setMessage] = useState<string>(""); */
+  const { userId, userName } = useUserIdStore();
 
   const data = api.user.find.useQuery({ id });
-  if (!userId) {
+
+  if (!userId || !userName) {
     return <div>No User Found</div>;
   }
+
   const conversationData = api.conversation.find.useQuery({
     Id1: id,
     Id2: userId,
@@ -32,18 +25,6 @@ const Chat = ({ id }: { id: string }) => {
     return <div>No Conversation Data Found</div>;
   }
   const roomId = conversationData.data.id;
-  socket.emit("joinChatRoom", roomId);
-  /* const handleMessageSend = async () => {
-    console.log(roomId);
-    const messageData = {
-      room: roomId,
-      author: data.data?.name,
-      message: message,
-    };
-
-    socket.emit("sendMessage", messageData);
-    console.log("emitted");
-  }; */
 
   if (data.isLoading) {
     return <div>Loading...</div>;
@@ -56,7 +37,13 @@ const Chat = ({ id }: { id: string }) => {
   const name = friend.name;
 
   return (
-    <Chat2 roomId={roomId} name={name} senderId={userId} recipientId={id} />
+    <Chat2
+      roomId={roomId}
+      senderName={userName}
+      name={name}
+      senderId={userId}
+      recipientId={id}
+    />
   );
 };
 

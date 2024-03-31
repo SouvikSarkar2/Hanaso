@@ -3,7 +3,7 @@ import localfont from "next/font/local";
 import { Inter } from "next/font/google";
 import { TRPCReactProvider } from "~/trpc/react";
 import { ThemeProviders } from "./_components/ThemeProvider";
-
+import { Toaster } from "~/components/ui/toaster";
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
@@ -89,7 +89,9 @@ export default function RootLayout({
         className={`${urbanist.variable} ${quigly.variable} ${cerlions.variable} ${ageya.variable} ${canopee.variable} ${confillia.variable} ${dahlia.variable} ${inter.className}`}
       >
         <TRPCReactProvider>
-          <ThemeProviders>{children}</ThemeProviders>
+          <ThemeProviders>
+            {children} <Toaster />
+          </ThemeProviders>
         </TRPCReactProvider>
       </body>
     </html>

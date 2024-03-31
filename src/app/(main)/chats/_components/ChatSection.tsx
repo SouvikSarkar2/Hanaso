@@ -9,19 +9,15 @@ import ChatFriendCard from "./ChatFriendCard";
 import Chat from "./Chat";
 import { Input } from "~/components/ui/input";
 import { socket } from "~/socket";
+import Toaster from "./Toaster";
 
 const ChatSection = () => {
   const [isInfoClicked, setIsInfoClicked] = useState<boolean>(false);
   const [isMembersClicked, setIsMembersClicked] = useState<boolean>(false);
   const [selectedFriend, setSelectedFriend] = useState<string>("0");
-  const { userId } = useUserIdStore();
-  useEffect(() => {
-    socket.connect();
 
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
+  const { userId } = useUserIdStore();
+
   if (!userId) {
     return <div>UserUndefined</div>;
   }
@@ -36,9 +32,10 @@ const ChatSection = () => {
 
   return (
     <div
-      className={`flex h-full w-full overflow-hidden ${isMembersClicked || isInfoClicked ? "gap-2" : ""} bg-black dark:bg-[#FFFAE6]`}
+      className={`flex h-full w-full overflow-hidden ${isMembersClicked || isInfoClicked ? "gap-2" : ""} bg-[#202022] dark:bg-[#FFFAE6]`}
     >
-      <div className="flex h-full w-full justify-start gap-4 rounded-3xl bg-white px-6 pb-2 pt-6 duration-500 dark:bg-[#202022] ">
+      <Toaster id={selectedFriend} />
+      <div className="flex h-full w-full justify-start gap-4 rounded-xl bg-white px-6 pb-2 pt-6 duration-500 dark:bg-[#202022] ">
         <div>
           <Input
             className="mb-4 rounded-[5px] border-2 border-black"

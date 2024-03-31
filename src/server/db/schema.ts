@@ -82,6 +82,7 @@ export const messages = createTable("message", {
   sentAt: timestamp("sentAt", { mode: "date" })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
+  senderName: varchar("senderName", { length: 255 }).notNull(),
 });
 
 export const usersRelations = relations(users, ({ many }) => ({

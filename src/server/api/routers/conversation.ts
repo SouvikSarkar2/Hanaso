@@ -14,6 +14,15 @@ export const conversationRouter = createTRPCRouter({
       });
       return conversationId;
     }),
+
+  findMessage: protectedProcedure
+    .input(z.object({ conversationId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const allMessages = await ctx.db.query.messages.findMany({
+        where: sql`${messages.conversationId} = ${input.conversationId}`,
+      });
+      return allMessages;
+    }),
   addMessage: protectedProcedure
     .input(
       z.object({
@@ -21,6 +30,7 @@ export const conversationRouter = createTRPCRouter({
         senderId: z.string(),
         recipientId: z.string(),
         content: z.string(),
+        senderName: z.string(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -30,6 +40,17 @@ export const conversationRouter = createTRPCRouter({
         senderId: input.senderId,
         conversationId: input.conversationId,
         id: sql`uuid_generate_v4()`,
+        senderName: input.senderName,
       });
+    }),
+  findConversationsOfUser: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const conversationIds = await ctx.db.query.conversations.findMany({
+        where: sql`
+        ARRAY[${input.id}]::text[] <@ users
+    `,
+      });
+      return conversationIds.map((el) => el.id);
     }),
 });

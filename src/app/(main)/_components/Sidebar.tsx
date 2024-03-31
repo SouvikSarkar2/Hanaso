@@ -18,7 +18,7 @@ const Sidebar = () => {
   const [isActive, setIsActive] = useState<string>(pathname);
 
   return (
-    <div className="font-urbanist flex h-full w-[6%] flex-col items-center justify-between rounded-3xl bg-[#202022] py-8 pl-2 text-sm text-white dark:bg-[#F2EFE6] dark:text-black">
+    <div className="flex h-full w-[6%] flex-col items-center justify-between bg-[#202022] py-8 pl-2 font-urbanist text-sm text-white dark:bg-[#F2EFE6] dark:text-black">
       <Link href={"/"} className="flex w-full items-center justify-center ">
         <Bot size={40} />
       </Link>

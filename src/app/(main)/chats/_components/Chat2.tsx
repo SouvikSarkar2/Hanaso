@@ -1,4 +1,3 @@
-import { sql } from "drizzle-orm";
 import {
   EllipsisVertical,
   Mic,
@@ -7,45 +6,36 @@ import {
   Search,
   Send,
 } from "lucide-react";
-import { useRouter } from "next/navigation";
+
 import { useEffect, useState } from "react";
 import { Input } from "~/components/ui/input";
+import { useToast } from "~/components/ui/use-toast";
 import { socket } from "~/socket";
-import { useUserIdStore } from "~/store";
-import { api } from "~/trpc/react";
 
-interface Message {
-  id: string;
-  conversationId: string;
-  senderId: string;
-  recipientId: string;
-  content: string;
-  sentAt: Date;
-}
+import { api } from "~/trpc/react";
+import type { Message } from "~/utils/Types";
 
 const Chat2 = ({
   roomId,
   name,
   senderId,
   recipientId,
+  senderName,
 }: {
   roomId: string;
   name: string;
   senderId: string;
   recipientId: string;
+  senderName: string;
 }) => {
-  const Router = useRouter();
+  const { toast } = useToast();
   const [message, setMessage] = useState<string>("");
   const [messageList, setMessageList] = useState<Message[]>([]);
-  const messages = api.conversation.find.useQuery({
-    Id1: senderId,
-    Id2: recipientId,
+  const messages = api.conversation.findMessage.useQuery({
+    conversationId: roomId,
   });
-  /* const addMessage = api.conversation.addMessage.useMutation({
-    onSuccess: () => {
-      router.refresh();
-    },
-  }); */
+  console.log(messages);
+  const addMessage = api.conversation.addMessage.useMutation({});
   console.log(messages.data);
 
   useEffect(() => {
@@ -55,15 +45,22 @@ const Chat2 = ({
   }, [messages.data]);
 
   useEffect(() => {
-    socket.on("receive_message", (data: Message) => {
-      setMessageList((list) => [...list, data]);
-      console.log("received");
-    });
     console.log("effectCalled");
+    socket.on("receiveMessage", (data: Message) => {
+      if (data.senderId === recipientId) {
+        setMessageList((list) => [...list, data]);
+        console.log("received");
+      } else {
+        toast({
+          title: `${data.senderName}`,
+          description: `${data.content}`,
+        });
+      }
+    });
     return () => {
-      socket.off("receive_message");
+      socket.off("receiveMessage");
     };
-  }, []);
+  }, [recipientId, toast, name]);
   if (messages.isLoading) {
     return <div>Loading...</div>;
   }
@@ -75,11 +72,13 @@ const Chat2 = ({
       recipientId: recipientId,
       content: message,
       sentAt: new Date(),
+      senderName: senderName,
     };
 
     socket.emit("sendMessage", messageData);
     setMessageList((list) => [...list, messageData]);
     setMessage("");
+    addMessage.mutate(messageData);
   };
   return (
     <div className="flex h-full w-full flex-col items-center justify-start  px-2">

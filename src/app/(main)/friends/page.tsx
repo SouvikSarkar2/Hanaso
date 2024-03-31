@@ -4,6 +4,7 @@ import { api } from "~/trpc/server";
 import Friend from "./_components/Friend";
 import Request from "./_components/Request";
 import People from "./_components/People";
+import Toaster from "./_components/Toaster";
 
 const page = async () => {
   const session = await getServerAuthSession();
@@ -22,6 +23,7 @@ const page = async () => {
 
   return (
     <div className="flex h-full w-full items-center justify-center">
+      <Toaster />
       <div className="flex h-[95%] w-[48%] flex-col items-start justify-start  pt-4">
         <div className="pl-2 text-3xl font-bold">Friends</div>
         <div className="flex flex-wrap items-start justify-start gap-6 pl-2 pt-6">

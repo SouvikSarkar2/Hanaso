@@ -1,6 +1,16 @@
+"use client";
+import { useEffect } from "react";
 import ChatSection from "./_components/ChatSection";
+import { socket } from "~/socket";
 
-const page = () => {
+const Page = () => {
+  /* useEffect(() => {
+    socket.connect();
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []); */
   return (
     <div className="h-full w-full">
       <ChatSection />
@@ -8,4 +18,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
