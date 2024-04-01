@@ -11,24 +11,26 @@ import { Input } from "~/components/ui/input";
 import { socket } from "~/socket";
 import Toaster from "./Toaster";
 
-const ChatSection = () => {
+const ChatSection = ({ userId }: { userId: string }) => {
   const [isInfoClicked, setIsInfoClicked] = useState<boolean>(false);
   const [isMembersClicked, setIsMembersClicked] = useState<boolean>(false);
   const [selectedFriend, setSelectedFriend] = useState<string>("0");
 
-  const { userId } = useUserIdStore();
+  const { data, isLoading, refetch } = api.user.find.useQuery({ id: userId });
 
-  if (!userId) {
-    return <div>UserUndefined</div>;
-  }
-  const user = api.user.find.useQuery({ id: userId });
-  if (user.isLoading) {
+  useEffect(() => {
+    socket.on("friendChanges", async () => {
+      await refetch();
+    });
+  }, [refetch]);
+
+  if (isLoading) {
     return <div>Loading...</div>;
   }
-  if (!user.data) {
+  if (!data) {
     return <div>Error Getting user Data</div>;
   }
-  const friends = user.data.friends;
+  const friends = data.friends;
 
   return (
     <div

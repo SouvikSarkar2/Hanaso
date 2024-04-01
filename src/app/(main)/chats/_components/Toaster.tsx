@@ -2,7 +2,7 @@
 import React, { useEffect } from "react";
 import { toast } from "~/components/ui/use-toast";
 import { socket } from "~/socket";
-import type { Message } from "~/utils/Types";
+import type { Message, onlineData } from "~/utils/Types";
 
 const Toaster = ({ id }: { id: string }) => {
   useEffect(() => {

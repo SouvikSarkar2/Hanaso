@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { socket } from "~/socket";
 import { useUserIdStore } from "~/store";
@@ -12,23 +13,30 @@ const UserIdSetter = ({
   id: string;
   name: string | undefined;
 }) => {
+  const Router = useRouter();
   const { setUserId, setUserName } = useUserIdStore();
-  const conversations = api.conversation.findConversationsOfUser.useQuery(
-    {
+  const { data, isLoading, refetch } =
+    api.conversation.findConversationsOfUser.useQuery({
       id: id,
-    },
-    {
-      refetchInterval: 5000,
-    },
-  );
+    });
+
+  useEffect(() => {
+    socket.on("friendChanges", async () => {
+      Router.prefetch("/friends");
+      Router.refresh();
+      await refetch();
+    });
+  }, [Router, refetch]);
 
   useEffect(() => {
     socket.connect();
+    socket.emit("online", { userId: id, userName: name });
     setUserId(id);
     setUserName(name);
-    if (conversations.data) {
+
+    if (data) {
       socket.off("JoinChatRoom");
-      conversations.data.map((el) => {
+      data.map((el) => {
         socket.emit("joinChatRoom", el);
       });
     }
@@ -36,13 +44,13 @@ const UserIdSetter = ({
     return () => {
       socket.disconnect();
     };
-  }, [id, setUserId, name, setUserName, conversations.data]);
+  }, [id, setUserId, name, setUserName, data, refetch]);
 
-  if (conversations.isLoading) {
+  if (isLoading) {
     return <div>Loading...</div>;
   }
 
-  if (!conversations.data) {
+  if (!data) {
     return <div>No Chat Found</div>;
   }
 

@@ -34,9 +34,8 @@ const Chat2 = ({
   const messages = api.conversation.findMessage.useQuery({
     conversationId: roomId,
   });
-  console.log(messages);
+
   const addMessage = api.conversation.addMessage.useMutation({});
-  console.log(messages.data);
 
   useEffect(() => {
     if (messages.data) {

@@ -2,6 +2,7 @@
 import { X } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { socket } from "~/socket";
 
 import { api } from "~/trpc/react";
 
@@ -20,6 +21,7 @@ const FriendCard = ({
   const deleteFriend = api.friend.deleteFriend.useMutation({
     onSuccess: () => {
       router.refresh();
+      socket.emit("friendChanged", currUserId);
     },
   });
 

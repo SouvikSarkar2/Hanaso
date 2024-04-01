@@ -7,3 +7,8 @@ export interface Message {
   content: string;
   sentAt: Date;
 }
+
+export interface onlineData {
+  userId: string;
+  userName: string;
+}

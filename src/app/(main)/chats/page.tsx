@@ -2,8 +2,10 @@
 import { useEffect } from "react";
 import ChatSection from "./_components/ChatSection";
 import { socket } from "~/socket";
+import { useUserIdStore } from "~/store";
 
 const Page = () => {
+  const { userId } = useUserIdStore();
   /* useEffect(() => {
     socket.connect();
 
@@ -11,9 +13,12 @@ const Page = () => {
       socket.disconnect();
     };
   }, []); */
+  if (!userId) {
+    return <div>UserUndefined</div>;
+  }
   return (
     <div className="h-full w-full">
-      <ChatSection />
+      <ChatSection userId={userId} />
     </div>
   );
 };

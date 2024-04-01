@@ -2,6 +2,7 @@
 import { Check, X } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { socket } from "~/socket";
 import { api } from "~/trpc/react";
 
 const RequestCard = ({
@@ -19,12 +20,14 @@ const RequestCard = ({
   const acceptRequest = api.friend.acceptRequest.useMutation({
     onSuccess: () => {
       router.refresh();
+      socket.emit("friendChanged", senderId);
     },
   });
 
   const rejectRequest = api.friend.rejectRequest.useMutation({
     onSuccess: () => {
       router.refresh();
+      socket.emit("friendChanged", senderId);
     },
   });
 
