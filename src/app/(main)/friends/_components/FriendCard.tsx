@@ -30,19 +30,23 @@ const FriendCard = ({
   }
 
   return (
-    <div className=" flex h-[70px] w-[300px] overflow-hidden rounded-xl bg-[#00000021] dark:bg-[#FFFAE621]">
-      <div className="h-full w-[24%] p-2">
-        <div className="relative h-full w-full overflow-hidden rounded-full ">
-          <Image src={img} alt="" fill />
-        </div>
+    <div className=" relative flex h-[200px]  w-[200px] overflow-hidden rounded-xl ">
+      <div className="absolute left-0 top-0 h-full w-full duration-500 hover:scale-150 hover:blur-sm">
+        <Image src={img} alt="" fill />
       </div>
-      <div className="flex h-full w-[55%] pl-2 pt-2 font-medium">{name}</div>
-      <div className="flex h-full w-[20%] items-center justify-center">
+
+      <div className="absolute left-2 top-2 z-10 flex font-urbanist text-xl font-bold">
+        <div className=" blur-0">{name}</div>
+      </div>
+      <div className="absolute bottom-1 right-2 z-10 flex h-[20%] w-full items-center justify-end gap-2">
+        <div className=" cursor-pointer rounded-[5px] bg-sky-500 px-2 font-urbanist font-bold duration-300 hover:scale-110">
+          Message
+        </div>
         <div
-          className=" cursor-pointer hover:text-red-500"
+          className=" cursor-pointer rounded-[5px] bg-red-500 px-2 font-urbanist font-bold duration-300 hover:scale-110"
           onClick={() => deleteFriend.mutate({ Id1: id, Id2: currUserId })}
         >
-          <X />
+          Delete
         </div>
       </div>
     </div>

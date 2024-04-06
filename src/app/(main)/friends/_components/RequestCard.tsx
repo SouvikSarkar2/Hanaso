@@ -40,28 +40,25 @@ const RequestCard = ({
   }
 
   return (
-    <div className=" flex h-[70px] w-[320px] overflow-hidden rounded-xl bg-[#00000021] dark:bg-[#FFFAE621]">
-      <div className="h-full w-[22%] p-2">
-        <div className="relative h-full w-full overflow-hidden rounded-xl ">
-          <Image src={img} alt="" fill />
+    <div className=" flex h-[50px] w-[350px]  overflow-hidden rounded-xl bg-[#202022] dark:bg-[#FFFAE621]">
+      <div className="flex h-full w-[50%] flex-row items-center  pl-2 font-medium">
+        <div className="pl-2 font-urbanist text-lg font-bold text-[#E6CA62]">
+          {name}
         </div>
       </div>
-      <div className="flex h-full w-[46%] items-center  pl-2 font-medium">
-        <div> {name}</div>
-      </div>
-      <div className="flex h-full w-[16%] items-center justify-center">
+      <div className="flex h-full w-[28%] items-center justify-end ">
         <div
-          className="cursor-pointer hover:text-green-500"
+          className="cursor-pointer rounded-[4px] bg-[#E6CA62] px-2 py-0.5 font-urbanist font-bold"
           onClick={() => {
             acceptRequest.mutate({ senderId, receiverId });
           }}
         >
-          <Check />
+          Accept
         </div>
       </div>
-      <div className="flex h-full w-[16%] items-center justify-center">
+      <div className="flex h-full w-[22%] items-center justify-center">
         <div
-          className=" cursor-pointer hover:text-red-500"
+          className="cursor-pointer rounded-[4px] bg-red-600 px-2 py-0.5 font-urbanist font-bold"
           onClick={() => {
             rejectRequest.mutate({
               senderId,
@@ -69,8 +66,7 @@ const RequestCard = ({
             });
           }}
         >
-          {" "}
-          <X />
+          Reject
         </div>
       </div>
     </div>

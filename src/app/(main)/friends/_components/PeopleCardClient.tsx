@@ -42,13 +42,13 @@ const PeopleCardClient = ({
   }
 
   return (
-    <div className=" flex h-[150px] w-[90%] overflow-hidden rounded-xl bg-white dark:bg-[#FFFAE621]">
-      <div className=" h-full w-[50%] p-2">
+    <div className=" flex h-[110px] w-[90%] overflow-hidden rounded-xl bg-white dark:bg-[#FFFAE621]">
+      <div className=" h-full w-[35%] p-2">
         <div className="relative h-full w-full overflow-hidden rounded-xl ">
           <Image src={img} alt="" fill />
         </div>
       </div>
-      <div className="flex h-full w-[50%] flex-col items-center justify-between">
+      <div className="flex h-full w-[65%] flex-col items-center justify-between">
         <div className="flex w-full flex-wrap pl-2 pt-3 font-urbanist text-xl font-bold">
           {name}
         </div>

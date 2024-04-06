@@ -27,27 +27,36 @@ const page = async () => {
       <div className="flex h-[96%] w-[73%] flex-col items-start justify-start">
         <div className="flex h-[83%] w-full flex-col ">
           <div className="pl-2 text-3xl font-bold">Friends</div>
-          <div className="flex flex-wrap items-start justify-start gap-6 pl-2 pt-6">
+          <div className="flex h-full w-full flex-wrap items-start justify-start gap-6 overflow-y-scroll pl-2 pt-6">
             {user.friends.map((id) => (
               <Friend key={id} id={id} currUserId={userId} />
             ))}
           </div>
         </div>
         <div className="h-[17%] w-full pr-2">
-          <div className="flex h-full w-full flex-col rounded-b-xl bg-[#202022]">
+          <div className="flex h-full w-full flex-col rounded-b-xl bg-[#E6CA62]">
             <div className="flex h-[30%] w-full justify-end ">
               <div className="h-full w-[86%] rounded-br-[20px] bg-white"></div>
               <div className="h-full w-[12%] bg-white">
-                <div className="flex h-full justify-end rounded-t-[20px] bg-[#202022] px-4 font-urbanist text-2xl font-bold text-[#E6CA62]">
+                <div className="flex h-full justify-end rounded-t-[20px] bg-[#E6CA62] px-4 font-urbanist text-2xl font-bold text-[#202022]">
                   <div className=""> requests</div>
                 </div>
               </div>
-              <div className="h-full w-[2%] bg-[#202022]">
+              <div className="h-full w-[2%] bg-[#E6CA62]">
                 <div className="h-full w-full rounded-bl-[15px] bg-white"></div>
               </div>
             </div>
             <div className="h-[70%] w-full bg-white">
-              <div className="h-full w-full rounded-xl bg-[#202022]"></div>
+              <div className="scrollbar-w-2 scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar scrollbar-thumb-[#202022] scrollbar-track-[#E6CA62] flex h-full w-full items-center justify-start gap-2 overflow-y-hidden overflow-x-scroll rounded-xl bg-[#E6CA62] px-2">
+                {user.friendRequests.map((id) => (
+                  <Request key={id} id={id} userId={userId} />
+                ))}
+                {user.friendRequests.length === 0 && (
+                  <div className="flex h-full w-full items-center justify-center font-urbanist text-lg italic text-slate-700">
+                    No Request Found
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -71,23 +80,9 @@ const page = async () => {
             </div>
           </div>
         </div>
-        <div className="flex h-[80%] w-full items-start justify-center overflow-y-scroll">
+        <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar scrollbar-thumb-[#E6CA62] scrollbar-track-[#202022] flex h-[80%] w-full items-start justify-center overflow-y-scroll">
           <People id={userId} />
         </div>
-        {/*  <div className="flex h-[50%] w-full flex-col items-start justify-start pt-4">
-          <div className="text-2xl font-semibold">Requests</div>
-          <div className="flex flex-col items-start justify-start gap-6 pt-6">
-            {user.friendRequests.map((id) => (
-              <Request key={id} id={id} userId={userId} />
-            ))}
-          </div>
-        </div>
-        <div className="flex h-[50%] w-full flex-col items-start justify-start gap-4">
-          <div className="text-xl font-semibold">People you may know</div>
-          <div>
-           
-          </div>
-        </div> */}
       </div>
     </div>
   );
