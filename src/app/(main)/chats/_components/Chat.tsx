@@ -35,6 +35,7 @@ const Chat = ({ id }: { id: string }) => {
   }
   const friend = data.data;
   const name = friend.name;
+  const img = friend.image;
 
   return (
     <Chat2
@@ -43,6 +44,7 @@ const Chat = ({ id }: { id: string }) => {
       name={name}
       senderId={userId}
       recipientId={id}
+      img={img}
     />
   );
 };

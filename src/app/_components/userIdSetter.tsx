@@ -21,18 +21,10 @@ const UserIdSetter = ({
     });
 
   useEffect(() => {
-    socket.on("friendChanges", async () => {
-      Router.prefetch("/friends");
-      Router.refresh();
-      await refetch();
-    });
-  }, [Router, refetch]);
-
-  useEffect(() => {
     socket.connect();
-    socket.emit("online", { userId: id, userName: name });
     setUserId(id);
     setUserName(name);
+    socket.emit("online", { userId: id, userName: name });
 
     if (data) {
       socket.off("JoinChatRoom");
@@ -42,9 +34,38 @@ const UserIdSetter = ({
     }
 
     return () => {
+      socket.emit("offline", { userId: id, time: Date.now() });
       socket.disconnect();
     };
   }, [id, setUserId, name, setUserName, data, refetch]);
+
+  useEffect(() => {
+    socket.on("onlineCheck", (onlineData: string[]) => {
+      console.log(onlineData);
+    });
+
+    return () => {
+      socket.off("onlineCheck");
+    };
+  }, []);
+
+  useEffect(() => {
+    socket.on("offlineCheck", (offlineData: string[]) => {
+      console.log(offlineData);
+    });
+
+    return () => {
+      socket.off("offlineCheck");
+    };
+  }, []);
+
+  useEffect(() => {
+    socket.on("friendChanges", async () => {
+      Router.prefetch("/friends");
+      Router.refresh();
+      await refetch();
+    });
+  }, [Router, refetch]);
 
   if (isLoading) {
     return <div>Loading...</div>;

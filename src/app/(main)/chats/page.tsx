@@ -17,7 +17,7 @@ const Page = () => {
     return <div>UserUndefined</div>;
   }
   return (
-    <div className="h-full w-full">
+    <div className="h-full w-full ">
       <ChatSection userId={userId} />
     </div>
   );

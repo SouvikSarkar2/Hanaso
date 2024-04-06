@@ -42,20 +42,20 @@ const PeopleCardClient = ({
   }
 
   return (
-    <div className=" flex h-[110px] w-[90%] overflow-hidden rounded-xl bg-white dark:bg-[#FFFAE621]">
-      <div className=" h-full w-[35%] p-2">
+    <div className=" flex h-[90px] w-[90%] overflow-hidden rounded-xl bg-[#ffffff] dark:bg-[#202022]">
+      <div className=" h-full w-[30%] p-2">
         <div className="relative h-full w-full overflow-hidden rounded-xl ">
           <Image src={img} alt="" fill />
         </div>
       </div>
-      <div className="flex h-full w-[65%] flex-col items-center justify-between">
+      <div className="flex h-full w-[70%] flex-col items-center justify-between">
         <div className="flex w-full flex-wrap pl-2 pt-3 font-urbanist text-xl font-bold">
           {name}
         </div>
         <div className="flex  w-full items-center justify-end p-2">
           {present ? (
             <div
-              className=" cursor-pointer rounded-[5px] bg-red-500 px-2 py-0.5 font-urbanist font-bold"
+              className="cursor-pointer rounded-[5px] bg-red-500 px-2 py-0.5 font-urbanist font-bold text-black"
               onClick={() => {
                 deleteRequest.mutate({
                   senderId: userId,
@@ -67,7 +67,7 @@ const PeopleCardClient = ({
             </div>
           ) : (
             <div
-              className=" cursor-pointer rounded-[5px] bg-[#E6CA62] px-2 py-0.5 font-urbanist font-bold"
+              className="cursor-pointer rounded-[5px] bg-[#E6CA62] px-2 py-0.5 font-urbanist font-bold text-black"
               onClick={() => {
                 sendRequest.mutate({ senderId: userId, receiverId: peopleId });
               }}

@@ -11,11 +11,15 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Sidebar = () => {
   const pathname = usePathname();
   const [isActive, setIsActive] = useState<string>(pathname);
+
+  useEffect(() => {
+    setIsActive(pathname);
+  }, [pathname]);
 
   return (
     <div className="flex h-full w-[6%] flex-col items-center justify-between bg-[#202022] py-8 pl-2 font-urbanist text-sm text-white dark:bg-[#F2EFE6] dark:text-black">

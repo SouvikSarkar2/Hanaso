@@ -1,6 +1,6 @@
 "use client";
 
-import { Cross, X } from "lucide-react";
+import { Cross, Ellipsis, MessageCircleDashed, Search, X } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useUserIdStore } from "~/store";
@@ -10,12 +10,15 @@ import Chat from "./Chat";
 import { Input } from "~/components/ui/input";
 import { socket } from "~/socket";
 import Toaster from "./Toaster";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const ChatSection = ({ userId }: { userId: string }) => {
+  const searchParams = useSearchParams();
+  const Router = useRouter();
+  const chatId = searchParams.get("q");
   const [isInfoClicked, setIsInfoClicked] = useState<boolean>(false);
   const [isMembersClicked, setIsMembersClicked] = useState<boolean>(false);
-  const [selectedFriend, setSelectedFriend] = useState<string>("0");
-
+  const [selectedFriend, setSelectedFriend] = useState<string>(chatId ?? "0");
   const { data, isLoading, refetch } = api.user.find.useQuery({ id: userId });
 
   useEffect(() => {
@@ -37,18 +40,29 @@ const ChatSection = ({ userId }: { userId: string }) => {
       className={`flex h-full w-full overflow-hidden ${isMembersClicked || isInfoClicked ? "gap-2" : ""} bg-[#202022] dark:bg-[#FFFAE6]`}
     >
       <Toaster id={selectedFriend} />
-      <div className="flex h-full w-full justify-start gap-4 rounded-xl bg-white px-6 pb-2 pt-6 duration-500 dark:bg-[#202022] ">
-        <div>
-          <Input
-            className="mb-4 rounded-[5px] border-2 border-black"
-            placeholder="Search"
-          />
-          <div className="flex h-full w-[250px] flex-col items-start justify-start gap-2 ">
+      <div className="flex h-full w-full justify-start  rounded-xl bg-white px-6 pb-2 pt-6 duration-500 dark:bg-[#202022]">
+        <div className="">
+          <div className="flex h-[12%] w-full items-center justify-between border-b-2 border-r-2 border-black  p-1 px-2">
+            <div className="font-urbanist text-xl font-bold">Messages (14)</div>
+            <div>
+              <Search />
+            </div>
+          </div>
+          <div className=" flex   h-[88%] w-[280px] flex-col items-start justify-start gap-2 border-r-2 border-r-black py-4 pl-2 ">
+            <div className="flex h-[7%] w-[90%] items-center justify-between font-urbanist font-bold">
+              <div>Chats</div>
+              <div>
+                <Ellipsis />
+              </div>
+            </div>
             {friends.map((id) => (
               <div
                 key={id}
-                onClick={() => setSelectedFriend(id)}
-                className={`cursor-pointer  ${id === selectedFriend ? " rounded-[5px] bg-[#00000041]" : ""}`}
+                onClick={() => {
+                  setSelectedFriend(id);
+                  Router.push(`/chats?q=${id}`);
+                }}
+                className={`flex  cursor-pointer items-center justify-center duration-300   ${id === selectedFriend ? " rounded-[5px] bg-[#20202221] dark:bg-[#ffffff21]" : ""}`}
               >
                 <ChatFriendCard id={id} />
               </div>
@@ -56,8 +70,11 @@ const ChatSection = ({ userId }: { userId: string }) => {
           </div>
         </div>
         {selectedFriend === "0" ? (
-          <div className="flex h-full w-full items-center justify-center font-semibold uppercase text-gray-500">
-            Start By Clicking A Friend
+          <div className="flex  h-full w-full items-center justify-center gap-2 font-semibold uppercase text-gray-500">
+            <div className="flex gap-2">
+              No Chat Selected
+              <MessageCircleDashed />
+            </div>
           </div>
         ) : (
           <Chat id={selectedFriend} />

@@ -1,5 +1,5 @@
 "use client";
-import { X } from "lucide-react";
+
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { socket } from "~/socket";
@@ -17,10 +17,10 @@ const FriendCard = ({
   id: string;
   currUserId: string;
 }) => {
-  const router = useRouter();
+  const Router = useRouter();
   const deleteFriend = api.friend.deleteFriend.useMutation({
     onSuccess: () => {
-      router.refresh();
+      Router.refresh();
       socket.emit("friendChanged", currUserId);
     },
   });
@@ -36,14 +36,17 @@ const FriendCard = ({
       </div>
 
       <div className="absolute left-2 top-2 z-10 flex font-urbanist text-xl font-bold">
-        <div className=" blur-0">{name}</div>
+        <div className=" text-black blur-0">{name}</div>
       </div>
       <div className="absolute bottom-1 right-2 z-10 flex h-[20%] w-full items-center justify-end gap-2">
-        <div className=" cursor-pointer rounded-[5px] bg-sky-500 px-2 font-urbanist font-bold duration-300 hover:scale-110">
+        <div
+          onClick={() => Router.push(`/chats?q=${id}`)}
+          className=" cursor-pointer rounded-[5px] bg-[#E6CA62] px-2 font-urbanist font-bold text-black duration-300 hover:scale-110"
+        >
           Message
         </div>
         <div
-          className=" cursor-pointer rounded-[5px] bg-red-500 px-2 font-urbanist font-bold duration-300 hover:scale-110"
+          className=" cursor-pointer rounded-[5px] bg-red-500 px-2 font-urbanist font-bold text-black duration-300 hover:scale-110"
           onClick={() => deleteFriend.mutate({ Id1: id, Id2: currUserId })}
         >
           Delete
