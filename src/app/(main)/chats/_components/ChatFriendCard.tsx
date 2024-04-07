@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { socket } from "~/socket";
 import { api } from "~/trpc/react";
@@ -16,26 +17,46 @@ const ChatFriendCard = ({
   conversationId: string;
 }) => {
   const [lastMessage, setLastMessage] = useState<string>("");
+  const [lastTime, setLastTime] = useState<string>("");
+  const [badge, setBadge] = useState<boolean>(false);
   const data = api.user.find.useQuery({ id: id });
-
+  const searchParams = useSearchParams();
+  const chatId = searchParams.get("q");
   const getLastMessage = api.conversation.findLastMessage.useQuery({
     conversationId,
   });
-
+  useEffect(() => {
+    if (chatId === id) {
+      setBadge(false);
+    }
+  }, [chatId, id]);
   useEffect(() => {
     socket.on("receiveLastMessage", (data: Message) => {
       if (data.senderId === id || data.senderId === userId) {
+        if (chatId !== data.senderId && data.senderId !== userId) {
+          setBadge(true);
+        }
         setLastMessage(data.content);
+        setLastTime(
+          new Date(data.sentAt).getHours() +
+            ":" +
+            new Date(data.sentAt).getMinutes(),
+        );
       }
     });
     return () => {
       socket.off("receiveLastMessage");
     };
-  }, [id, userId]);
+  }, [id, userId, chatId]);
 
   useEffect(() => {
     if (getLastMessage.data) {
       setLastMessage(getLastMessage.data.content);
+      setLastTime(
+        new Date(getLastMessage.data.sentAt).getHours() +
+          ":" +
+          new Date(getLastMessage.data.sentAt).getMinutes(),
+      );
     }
   }, [getLastMessage.data]);
   if (getLastMessage.isLoading) {
@@ -59,9 +80,21 @@ const ChatFriendCard = ({
       </div>
       <div className="flex h-full w-[70%] flex-col p-2 font-medium">
         <div className="h-[50%] w-full ">
-          <div className="text-md font-urbanist font-bold">{friend.name}</div>
+          <div className=" flex  w-full items-center justify-between ">
+            <div className="text-md font-urbanist font-bold dark:text-gray-200">
+              {friend.name}
+            </div>
+            <div className="text-xs">{lastTime}</div>
+          </div>
         </div>
-        <div className="h-50% w-full text-sm text-slate-500">{lastMessage}</div>
+        <div className="h-50% flex w-full items-center justify-between text-sm text-slate-500">
+          <div>{lastMessage}</div>
+          {badge && (
+            <div className="rounded-full bg-slate-400 px-2 text-xs text-black">
+              new
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
