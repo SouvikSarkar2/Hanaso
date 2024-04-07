@@ -14,7 +14,18 @@ export const conversationRouter = createTRPCRouter({
       });
       return conversationId;
     }),
-
+  findLastMessage: protectedProcedure
+    .input(z.object({ conversationId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const lastMessage = await ctx.db.query.messages.findFirst({
+        where: sql`${messages.conversationId} = ${input.conversationId}`,
+        orderBy: (messages, { desc }) => [desc(messages.sentAt)],
+      });
+      if (!lastMessage) {
+        return "";
+      }
+      return lastMessage;
+    }),
   findMessage: protectedProcedure
     .input(z.object({ conversationId: z.string() }))
     .query(async ({ ctx, input }) => {

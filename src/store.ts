@@ -13,3 +13,28 @@ export const useUserIdStore = create<UserIdStore>()((set) => ({
   setUserId: (id) => set(() => ({ userId: id })),
   setUserName: (name) => set(() => ({ userName: name })),
 }));
+
+type OnlineUserStore = {
+  users: string[];
+  setOnlineUsers: (data: string[]) => void;
+};
+
+export const useOnlineUserStore = create<OnlineUserStore>()((set) => ({
+  users: [],
+  setOnlineUsers: (data) => set(() => ({ users: data })),
+}));
+
+type offlineUserData = {
+  userId: string;
+  time: Date;
+};
+
+type OfflineUserStore = {
+  offlineUsers: offlineUserData[];
+  setOfflineUsers: (data: offlineUserData[]) => void;
+};
+
+export const useOfflineUserStore = create<OfflineUserStore>()((set) => ({
+  offlineUsers: [],
+  setOfflineUsers: (data) => set(() => ({ offlineUsers: data })),
+}));

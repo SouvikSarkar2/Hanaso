@@ -11,6 +11,7 @@ import { Input } from "~/components/ui/input";
 import { socket } from "~/socket";
 import Toaster from "./Toaster";
 import { useRouter, useSearchParams } from "next/navigation";
+import ChatFriendUtil from "./ChatFriendUtil";
 
 const ChatSection = ({ userId }: { userId: string }) => {
   const searchParams = useSearchParams();
@@ -64,7 +65,7 @@ const ChatSection = ({ userId }: { userId: string }) => {
                 }}
                 className={`flex  cursor-pointer items-center justify-center duration-300   ${id === selectedFriend ? " rounded-[5px] bg-[#20202221] dark:bg-[#ffffff21]" : ""}`}
               >
-                <ChatFriendCard id={id} />
+                <ChatFriendUtil id={id} key={id} userId={userId} />
               </div>
             ))}
           </div>

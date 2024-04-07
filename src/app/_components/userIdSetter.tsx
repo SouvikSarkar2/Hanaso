@@ -3,7 +3,11 @@
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { socket } from "~/socket";
-import { useUserIdStore } from "~/store";
+import {
+  useOfflineUserStore,
+  useOnlineUserStore,
+  useUserIdStore,
+} from "~/store";
 import { api } from "~/trpc/react";
 
 const UserIdSetter = ({
@@ -15,6 +19,8 @@ const UserIdSetter = ({
 }) => {
   const Router = useRouter();
   const { setUserId, setUserName } = useUserIdStore();
+  const { setOnlineUsers } = useOnlineUserStore();
+  const { setOfflineUsers } = useOfflineUserStore();
   const { data, isLoading, refetch } =
     api.conversation.findConversationsOfUser.useQuery({
       id: id,
@@ -34,14 +40,13 @@ const UserIdSetter = ({
     }
 
     return () => {
-      socket.emit("offline", { userId: id, time: Date.now() });
       socket.disconnect();
     };
   }, [id, setUserId, name, setUserName, data, refetch]);
 
   useEffect(() => {
     socket.on("onlineCheck", (onlineData: string[]) => {
-      console.log(onlineData);
+      setOnlineUsers(onlineData);
     });
 
     return () => {
@@ -50,9 +55,12 @@ const UserIdSetter = ({
   }, []);
 
   useEffect(() => {
-    socket.on("offlineCheck", (offlineData: string[]) => {
-      console.log(offlineData);
-    });
+    socket.on(
+      "offlineCheck",
+      (offlineData: { userId: string; time: Date }[]) => {
+        setOfflineUsers(offlineData);
+      },
+    );
 
     return () => {
       socket.off("offlineCheck");
