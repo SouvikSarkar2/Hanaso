@@ -1,11 +1,7 @@
 import { eq, sql } from "drizzle-orm";
 import { z } from "zod";
 
-import {
-  createTRPCRouter,
-  protectedProcedure,
-  publicProcedure,
-} from "~/server/api/trpc";
+import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { conversations, messages, users } from "~/server/db/schema";
 
 export const friendRouter = createTRPCRouter({

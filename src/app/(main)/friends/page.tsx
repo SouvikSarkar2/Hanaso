@@ -4,7 +4,7 @@ import { api } from "~/trpc/server";
 import Friend from "./_components/Friend";
 import Request from "./_components/Request";
 import People from "./_components/People";
-import Toaster from "./_components/Toaster";
+import Toaster from "../friends/_components/Toaster";
 
 const page = async () => {
   const session = await getServerAuthSession();

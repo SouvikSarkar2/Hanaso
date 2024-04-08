@@ -65,7 +65,7 @@ const UserIdSetter = ({
     return () => {
       socket.off("offlineCheck");
     };
-  }, []);
+  }, [setOfflineUsers]);
 
   useEffect(() => {
     socket.on("friendChanges", async () => {

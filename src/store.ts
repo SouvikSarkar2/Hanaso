@@ -38,3 +38,19 @@ export const useOfflineUserStore = create<OfflineUserStore>()((set) => ({
   offlineUsers: [],
   setOfflineUsers: (data) => set(() => ({ offlineUsers: data })),
 }));
+
+type GlobalBadgeStore = {
+  totalBadges: number;
+  incrementTotalBadges: () => void;
+  decrementTotalBadge: () => void;
+  resetTotalBadge: () => void;
+};
+
+export const useGlobalBadgeStore = create<GlobalBadgeStore>()((set) => ({
+  totalBadges: 0,
+  incrementTotalBadges: () =>
+    set((state) => ({ totalBadges: state.totalBadges + 1 })),
+  decrementTotalBadge: () =>
+    set((state) => ({ totalBadges: state.totalBadges - 1 })),
+  resetTotalBadge: () => set(() => ({ totalBadges: 0 })),
+}));

@@ -1,15 +1,22 @@
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Input } from "~/components/ui/input";
 import { socket } from "~/socket";
 import { useUserIdStore } from "~/store";
 import { api } from "~/trpc/react";
 import Chat2 from "./Chat2";
 
-const Chat = ({ id }: { id: string }) => {
+const Chat = ({
+  id,
+  setIsInfoClicked,
+  isInfoClicked,
+}: {
+  id: string;
+  isInfoClicked: boolean;
+  setIsInfoClicked: Dispatch<SetStateAction<boolean>>;
+}) => {
   const { userId, userName } = useUserIdStore();
 
   const data = api.user.find.useQuery({ id });
-
   if (!userId || !userName) {
     return <div>No User Found</div>;
   }
@@ -45,6 +52,8 @@ const Chat = ({ id }: { id: string }) => {
       senderId={userId}
       recipientId={id}
       img={img}
+      isInfoClicked={isInfoClicked}
+      setIsInfoClicked={setIsInfoClicked}
     />
   );
 };

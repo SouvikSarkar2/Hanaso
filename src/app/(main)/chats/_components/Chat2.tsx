@@ -6,19 +6,27 @@ import {
   Search,
   Send,
 } from "lucide-react";
+
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "~/components/ui/popover";
+
 import Image from "next/image";
 
 import { useEffect, useRef, useState } from "react";
-import type { RefObject } from "react";
+import type { Dispatch, RefObject, SetStateAction } from "react";
 import { Input } from "~/components/ui/input";
-import { useToast } from "~/components/ui/use-toast";
+
 import { socket } from "~/socket";
 import { useOfflineUserStore, useOnlineUserStore } from "~/store";
-import { stringify as uuidStringify } from "uuid";
+
 import { api } from "~/trpc/react";
 import type { Message } from "~/utils/Types";
-import { string } from "zod";
 
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 const Chat2 = ({
   roomId,
   name,
@@ -26,6 +34,8 @@ const Chat2 = ({
   recipientId,
   senderName,
   img,
+  setIsInfoClicked,
+  isInfoClicked,
 }: {
   roomId: string;
   name: string;
@@ -33,8 +43,10 @@ const Chat2 = ({
   recipientId: string;
   senderName: string;
   img: string;
+  isInfoClicked: boolean;
+  setIsInfoClicked: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const { toast } = useToast();
+  const Router = useRouter();
   const { users } = useOnlineUserStore();
   const { offlineUsers } = useOfflineUserStore();
   const [message, setMessage] = useState<string>("");
@@ -95,23 +107,28 @@ const Chat2 = ({
     socket.on("receiveMessage", (data: Message) => {
       if (data.senderId === recipientId) {
         setMessageList((list) => [...list, data]);
-        console.log("received");
       } else {
-        toast({
-          title: `${data.senderName}`,
+        toast(`${data.senderName}`, {
           description: `${data.content}`,
+          action: {
+            label: "Reply",
+            onClick: () => Router.push(`/chats/?q=${data.senderId}`),
+          },
         });
       }
     });
     return () => {
       socket.off("receiveMessage");
     };
-  }, [recipientId, toast, name]);
+  }, [recipientId, name, Router]);
   if (messages.isLoading) {
     return <div>Loading...</div>;
   }
 
   const handleMessageSend = async () => {
+    if (message === "") {
+      return;
+    }
     const messageData = {
       id: Math.random().toString(),
       conversationId: roomId,
@@ -130,7 +147,7 @@ const Chat2 = ({
   return (
     <div className="flex h-full w-full flex-col items-center justify-start ">
       <div className="flex h-[12%] w-full items-center justify-between border-b-2 border-b-black">
-        <div className="relative h-full w-[9%] p-3">
+        <div className="relative h-[88px] w-[88px] p-3">
           <div className="relative h-full w-full overflow-hidden rounded-full">
             <Image src={img} fill alt="" />
           </div>
@@ -153,7 +170,33 @@ const Chat2 = ({
         <div className="flex h-full w-[20%] items-center justify-end gap-4">
           <Search />
           <Phone />
-          <EllipsisVertical />
+          <div className="flex h-6 w-6 items-center justify-center">
+            <Popover>
+              <PopoverTrigger>
+                <EllipsisVertical
+                  size={32}
+                  className=" rounded-full p-1 duration-300 hover:bg-slate-300 dark:hover:bg-[#3D3D3F]"
+                />
+              </PopoverTrigger>
+              <PopoverContent className="mr-4 w-[150px] rounded-xl font-urbanist  font-semibold dark:bg-[#3D3D3F]">
+                <div
+                  className="w-full  cursor-pointer rounded-[5px] py-1 pl-2 hover:bg-[#20202250] "
+                  onClick={() => setIsInfoClicked(!isInfoClicked)}
+                >
+                  View
+                </div>
+                <div className="w-full cursor-pointer rounded-[5px] py-1 pl-2 hover:bg-[#20202250]">
+                  Block
+                </div>
+                <div className="w-full cursor-pointer rounded-[5px] py-1 pl-2 hover:bg-[#20202250]">
+                  Delete chat
+                </div>
+                <div className="w-full cursor-pointer rounded-[5px] py-1 pl-2 hover:bg-[#20202250]">
+                  Delete user
+                </div>
+              </PopoverContent>
+            </Popover>
+          </div>
         </div>
       </div>
       <div className="flex h-[78%] w-full flex-col gap-3 overflow-y-scroll py-2 pl-4 pr-2">

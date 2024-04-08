@@ -3,6 +3,7 @@
 import { UserRoundPlus, X } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import { socket } from "~/socket";
 import { api } from "~/trpc/react";
 
@@ -23,13 +24,21 @@ const PeopleCardClient = ({
   const sendRequest = api.friend.request.useMutation({
     onSuccess: () => {
       router.refresh();
+      toast.success("Request Send");
       socket.emit("friendChanged", userId);
+    },
+    onError: () => {
+      toast.error("Error Sending Request");
     },
   });
   const deleteRequest = api.friend.rejectRequest.useMutation({
     onSuccess: () => {
       router.refresh();
+      toast.success("Request Deleted");
       socket.emit("friendChanged", userId);
+    },
+    onError: () => {
+      toast.error("Error Cancelling Request");
     },
   });
 
@@ -43,7 +52,7 @@ const PeopleCardClient = ({
 
   return (
     <div className=" flex h-[90px] w-[90%] overflow-hidden rounded-xl bg-[#ffffff] dark:bg-[#202022]">
-      <div className=" h-full w-[30%] p-2">
+      <div className=" h-full w-[30%] p-2 ">
         <div className="relative h-full w-full overflow-hidden rounded-xl ">
           <Image src={img} alt="" fill />
         </div>

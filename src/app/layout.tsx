@@ -3,7 +3,7 @@ import localfont from "next/font/local";
 import { Inter } from "next/font/google";
 import { TRPCReactProvider } from "~/trpc/react";
 import { ThemeProviders } from "./_components/ThemeProvider";
-import { Toaster } from "~/components/ui/toaster";
+import { Toaster } from "sonner";
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",

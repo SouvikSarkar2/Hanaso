@@ -6,13 +6,7 @@ import { useUserIdStore } from "~/store";
 
 const Page = () => {
   const { userId } = useUserIdStore();
-  /* useEffect(() => {
-    socket.connect();
 
-    return () => {
-      socket.disconnect();
-    };
-  }, []); */
   if (!userId) {
     return <div>UserUndefined</div>;
   }
