@@ -1,5 +1,17 @@
 "use client";
 
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "~/components/ui/alert-dialog";
+
 import { MessageSquareText, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -33,28 +45,56 @@ const FriendCard = ({
   }
 
   return (
-    <div className=" relative flex h-[120px]  w-[150px] overflow-hidden rounded-xl ">
-      <div className="absolute left-0 top-0 h-full w-full duration-500 hover:scale-150 hover:blur-sm">
-        <Image src={img} alt="" fill />
+    <div className="flex flex-col items-center justify-center gap-2">
+      <div className="  flex h-[120px] w-[160px] items-start  justify-end gap-1  rounded-xl">
+        <div className=" relative left-0 top-0 h-[120px] w-[120px] overflow-hidden  rounded-l-xl rounded-br-xl duration-500">
+          <Image src={img} alt="" fill />
+        </div>
+        <div>
+          <div className="flex  flex-col items-center justify-center gap-1">
+            <div
+              onClick={() => Router.push(`/chats?q=${id}`)}
+              className=" cursor-pointer rounded-r-[5px] rounded-tr-xl  bg-[#E6CA62] px-2 py-1 font-urbanist font-bold text-black duration-300 hover:scale-110"
+            >
+              <MessageSquareText size={20} />
+            </div>
+            <div className=" cursor-pointer rounded-r-[5px] rounded-br-xl bg-red-500 px-2 py-1 font-urbanist font-bold text-black duration-300 hover:scale-110">
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Trash2 size={20} />
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>
+                      Are you absolutely sure?
+                    </AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Your Friend will get deleted along with all the messages
+                      calls you have with them
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel className="rounded-xl">
+                      Cancel
+                    </AlertDialogCancel>
+                    <AlertDialogAction
+                      className="rounded-xl"
+                      onClick={() =>
+                        deleteFriend.mutate({ Id1: id, Id2: currUserId })
+                      }
+                    >
+                      Continue
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </div>
+          </div>
+        </div>
       </div>
-
-      <div className="absolute left-2 top-2 z-10 flex font-urbanist text-xl font-bold">
-        <div className=" text-md z-20 cursor-default rounded-[10px] bg-inherit px-1 text-[16px]  text-black blur-0 duration-500 hover:bg-white">
+      <div className="text-md flex h-[70px] w-[160px] cursor-default flex-col items-end justify-between rounded-[10px] bg-inherit p-1 px-1 text-[16px]   blur-0 ">
+        <div className="flex w-full items-start justify-start font-urbanist font-semibold ">
           {name}
-        </div>
-      </div>
-      <div className="absolute bottom-1 right-2 z-10 flex h-[20%] w-full items-center justify-end gap-2">
-        <div
-          onClick={() => Router.push(`/chats?q=${id}`)}
-          className=" cursor-pointer rounded-[5px] bg-[#E6CA62] px-2 font-urbanist font-bold text-black duration-300 hover:scale-110"
-        >
-          <MessageSquareText size={18} />
-        </div>
-        <div
-          className=" cursor-pointer rounded-[5px] bg-red-500 px-2 font-urbanist font-bold text-black duration-300 hover:scale-110"
-          onClick={() => deleteFriend.mutate({ Id1: id, Id2: currUserId })}
-        >
-          <Trash2 size={18} />
         </div>
       </div>
     </div>

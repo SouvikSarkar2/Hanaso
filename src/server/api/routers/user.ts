@@ -23,4 +23,15 @@ export const userRouter = createTRPCRouter({
       }
       return user;
     }),
+  /* findMany: protectedProcedure
+    .input(z.array(z.string()))
+    .query(async ({ input, ctx }) => {
+      const Users: (typeof users)[] = [];
+      input.map(async (id) => {
+        const user = await ctx.db.query.users.findFirst({
+          where: sql`${users.id} = ${id}`,
+        });
+      });
+      return Users;
+    }), */
 });

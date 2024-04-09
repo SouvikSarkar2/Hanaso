@@ -64,7 +64,7 @@ const PeopleCardClient = ({
         <div className="flex  w-full items-center justify-end p-2">
           {present ? (
             <div
-              className="cursor-pointer rounded-[5px] bg-red-500 px-2 py-0.5 font-urbanist font-bold text-black"
+              className="cursor-pointer rounded-[5px] bg-red-500 px-1 py-0.5 font-bold text-black"
               onClick={() => {
                 deleteRequest.mutate({
                   senderId: userId,
@@ -72,7 +72,7 @@ const PeopleCardClient = ({
                 });
               }}
             >
-              Cancel
+              <X size={20} />
             </div>
           ) : (
             <div
@@ -81,7 +81,7 @@ const PeopleCardClient = ({
                 sendRequest.mutate({ senderId: userId, receiverId: peopleId });
               }}
             >
-              Add Friend
+              send request
             </div>
           )}
         </div>

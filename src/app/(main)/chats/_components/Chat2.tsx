@@ -13,6 +13,18 @@ import {
   PopoverTrigger,
 } from "~/components/ui/popover";
 
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "~/components/ui/alert-dialog";
+
 import Image from "next/image";
 
 import { useEffect, useRef, useState } from "react";
@@ -186,7 +198,31 @@ const Chat2 = ({
                   View
                 </div>
                 <div className="w-full cursor-pointer rounded-[5px] py-1 pl-2 hover:bg-[#20202250]">
-                  Block
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <div>Block</div>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>
+                          Do you really want to block this user ?
+                        </AlertDialogTitle>
+                        <AlertDialogDescription>
+                          Blocking this user will make all the messages
+                          disappear and you will not be able to send any
+                          messages further
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel className="rounded-xl">
+                          Cancel
+                        </AlertDialogCancel>
+                        <AlertDialogAction className="rounded-xl">
+                          Continue
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
                 </div>
                 <div className="w-full cursor-pointer rounded-[5px] py-1 pl-2 hover:bg-[#20202250]">
                   Delete chat
