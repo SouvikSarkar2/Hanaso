@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { Skeleton } from "~/components/ui/skeleton";
 import { socket } from "~/socket";
 import { useGlobalBadgeStore, useOnlineUserStore } from "~/store";
 import { api } from "~/trpc/react";
@@ -78,12 +79,18 @@ const ChatFriendCard = ({
       );
     }
   }, [getLastMessage.data]);
-  if (getLastMessage.isLoading) {
-    return <div>Loading..</div>;
-  }
-
   if (data.isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex h-[68px] w-[250px] rounded-lg ">
+        <div className=" relative flex h-full w-[28%] p-2">
+          <Skeleton className="relative h-full w-full overflow-hidden rounded-full"></Skeleton>
+        </div>
+        <div className="flex h-full w-[70%] flex-col items-start justify-center gap-1 p-2 font-medium">
+          <Skeleton className="h-[50%] w-full rounded-[8px]"></Skeleton>
+          <Skeleton className="flex h-[30%] w-[70%] rounded-xl"></Skeleton>
+        </div>
+      </div>
+    );
   }
   if (!data.data) {
     return <div> Friend Doesnt Exist</div>;
@@ -111,14 +118,18 @@ const ChatFriendCard = ({
             <div className="text-xs">{lastTime}</div>
           </div>
         </div>
-        <div className="h-50% flex w-full items-center justify-between text-sm text-slate-500">
-          <div>{lastMessage}</div>
-          {badge !== 0 && (
-            <div className="rounded-full bg-slate-800 px-1 text-xs font-bold text-white dark:bg-slate-400 dark:text-black ">
-              {badge}
-            </div>
-          )}
-        </div>
+        {getLastMessage.isLoading ? (
+          <Skeleton className="mt-1 h-[30%] w-[70%] rounded-xl"></Skeleton>
+        ) : (
+          <div className="h-50% flex w-full items-center justify-between text-sm text-slate-500">
+            <div>{lastMessage}</div>
+            {badge !== 0 && (
+              <div className="rounded-full bg-slate-800 px-1 text-xs font-bold text-white dark:bg-slate-400 dark:text-black ">
+                {badge}
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

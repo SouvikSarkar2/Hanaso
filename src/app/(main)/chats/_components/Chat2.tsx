@@ -39,6 +39,7 @@ import type { Message } from "~/utils/Types";
 
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { Skeleton } from "~/components/ui/skeleton";
 const Chat2 = ({
   roomId,
   name,
@@ -133,9 +134,6 @@ const Chat2 = ({
       socket.off("receiveMessage");
     };
   }, [recipientId, name, Router]);
-  if (messages.isLoading) {
-    return <div>Loading...</div>;
-  }
 
   const handleMessageSend = async () => {
     if (message === "") {
@@ -236,25 +234,29 @@ const Chat2 = ({
         </div>
       </div>
       <div className="flex h-[78%] w-full flex-col gap-3 overflow-y-scroll py-2 pl-4 pr-2">
-        {messageList.map((el) => (
-          <div
-            key={el.id}
-            className={`flex w-full ${el.senderId === senderId ? " justify-end" : ""} `}
-          >
-            <div className={`flex flex-col gap-1 font-medium   `}>
-              <div
-                className={`rounded-b-xl bg-[#20202221] px-3 py-2 font-urbanist font-semibold dark:bg-[#ffffff21] dark:text-gray-300 ${el.senderId === senderId ? "rounded-l-xl" : "rounded-r-xl"}`}
-              >
-                {el.content}
-              </div>
-              <div className="flex w-full min-w-[100px] justify-end pb-1 pr-1 text-xs font-medium text-slate-600 dark:text-slate-500">
-                {new Date(el.sentAt).getHours() +
-                  ":" +
-                  new Date(el.sentAt).getMinutes()}
+        {messages.isLoading ? (
+          <Skeleton className="h-full w-full rounded-xl"></Skeleton>
+        ) : (
+          messageList.map((el) => (
+            <div
+              key={el.id}
+              className={`flex w-full ${el.senderId === senderId ? " justify-end" : ""} `}
+            >
+              <div className={`flex flex-col gap-1 font-medium   `}>
+                <div
+                  className={`rounded-b-xl bg-[#20202221] px-3 py-2 font-urbanist font-semibold dark:bg-[#ffffff21] dark:text-gray-300 ${el.senderId === senderId ? "rounded-l-xl" : "rounded-r-xl"}`}
+                >
+                  {el.content}
+                </div>
+                <div className="flex w-full min-w-[100px] justify-end pb-1 pr-1 text-xs font-medium text-slate-600 dark:text-slate-500">
+                  {new Date(el.sentAt).getHours() +
+                    ":" +
+                    new Date(el.sentAt).getMinutes()}
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))
+        )}
         <div ref={messageEndRef} />
       </div>
       <div className="flex h-[10%] w-full items-center justify-center ">

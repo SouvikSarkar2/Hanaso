@@ -76,11 +76,11 @@ const UserIdSetter = ({
   }, [Router, refetch]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div></div>;
   }
 
   if (!data) {
-    return <div>No Chat Found</div>;
+    return <div></div>;
   }
 
   return <div></div>;

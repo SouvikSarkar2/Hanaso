@@ -1,5 +1,6 @@
 import { api } from "~/trpc/server";
 import FriendCard from "./FriendCard";
+import { Skeleton } from "~/components/ui/skeleton";
 
 const Friend = async ({
   id,
@@ -11,7 +12,12 @@ const Friend = async ({
   const user = await api.user.find({ id: id });
 
   if (!user) {
-    return <div>Loading</div>;
+    return (
+      <div className="flex flex-col gap-2">
+        <Skeleton className="h-[120px] w-[160px] rounded-xl"></Skeleton>
+        <Skeleton className="h-10 w-[120px] rounded-xl"></Skeleton>
+      </div>
+    );
   }
   const name = user.name;
   const img = user.image;

@@ -1,11 +1,21 @@
 import Image from "next/image";
 import { api } from "~/trpc/react";
 import UserFriend from "./UserFriend";
+import { Skeleton } from "~/components/ui/skeleton";
 
 const FriendInfo = ({ friendId }: { friendId: string }) => {
   const { data, isLoading } = api.user.find.useQuery({ id: friendId });
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex h-full w-full flex-col items-center justify-start">
+        <Skeleton className="relative h-[200px] w-[200px]  rounded-full"></Skeleton>
+        <Skeleton className="my-2 h-8 w-[60%] rounded-xl"></Skeleton>
+        <Skeleton className="mb-2 h-6 w-[75%] rounded-xl"></Skeleton>
+        <Skeleton className="h-[24%] w-full rounded-xl bg-[#E2E2E2] dark:bg-[#E2E2E250]"></Skeleton>
+        <Skeleton className="mt-4 h-[24%] w-full rounded-xl"></Skeleton>
+        <Skeleton className=" mt-2 h-[6%] w-full rounded-xl"></Skeleton>
+      </div>
+    );
   }
   if (!data) {
     return <div>No Data Found</div>;

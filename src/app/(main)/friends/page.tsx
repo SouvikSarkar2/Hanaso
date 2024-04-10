@@ -15,10 +15,6 @@ const page = async () => {
   const user = await api.user.find({ id: session.user.id });
   /* console.log(user); */
 
-  if (!user) {
-    return <div>Loading...</div>;
-  }
-
   const userId = user.id;
 
   return (
