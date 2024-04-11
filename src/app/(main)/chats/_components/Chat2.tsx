@@ -40,6 +40,7 @@ import type { Message } from "~/utils/Types";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { Skeleton } from "~/components/ui/skeleton";
+import { produceMessage } from "~/kafka";
 const Chat2 = ({
   roomId,
   name,
@@ -152,7 +153,8 @@ const Chat2 = ({
     socket.emit("sendMessage", messageData);
     setMessageList((list) => [...list, messageData]);
     setMessage("");
-    addMessage.mutate(messageData);
+    await produceMessage(messageData);
+    // addMessage.mutate(messageData);
   };
   return (
     <div className="flex h-full w-full flex-col items-center justify-start ">

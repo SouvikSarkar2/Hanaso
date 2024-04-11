@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { socket } from "~/socket";
 import { api } from "~/trpc/react";
+import { Oval } from "react-loader-spinner";
 
 const PeopleCardClient = ({
   peopleId,
@@ -42,14 +43,6 @@ const PeopleCardClient = ({
     },
   });
 
-  if (sendRequest.isPending) {
-    return <div>Sending Request...</div>;
-  }
-
-  if (deleteRequest.isPending) {
-    return <div>Deleting Request...</div>;
-  }
-
   return (
     <div className=" flex h-[90px] w-[90%] overflow-hidden rounded-xl bg-[#ffffff] dark:bg-[#202022]">
       <div className=" h-full w-[30%] p-2 ">
@@ -63,25 +56,60 @@ const PeopleCardClient = ({
         </div>
         <div className="flex  w-full items-center justify-end p-2">
           {present ? (
-            <div
-              className="cursor-pointer rounded-[5px] bg-red-500 px-1 py-0.5 font-bold text-black"
-              onClick={() => {
-                deleteRequest.mutate({
-                  senderId: userId,
-                  receiverId: peopleId,
-                });
-              }}
-            >
-              <X size={20} />
+            <div>
+              {deleteRequest.isPending ? (
+                <div className="h-8 w-8 ">
+                  <Oval
+                    visible={true}
+                    height="20"
+                    width="20"
+                    color="#000000"
+                    secondaryColor="#ffffff"
+                    ariaLabel="oval-loading"
+                    wrapperStyle={{}}
+                    wrapperClass=""
+                  />
+                </div>
+              ) : (
+                <div
+                  className="cursor-pointer rounded-[5px] bg-red-500 px-1 py-0.5 font-bold text-black"
+                  onClick={() => {
+                    deleteRequest.mutate({
+                      senderId: userId,
+                      receiverId: peopleId,
+                    });
+                  }}
+                >
+                  <X size={20} />
+                </div>
+              )}
             </div>
           ) : (
-            <div
-              className="cursor-pointer rounded-[5px] bg-[#E6CA62] px-2 py-0.5 font-urbanist font-bold text-black"
-              onClick={() => {
-                sendRequest.mutate({ senderId: userId, receiverId: peopleId });
-              }}
-            >
-              send request
+            <div>
+              {sendRequest.isPending ? (
+                <Oval
+                  visible={true}
+                  height="20"
+                  width="20"
+                  color="#000000"
+                  secondaryColor="#ffffff"
+                  ariaLabel="oval-loading"
+                  wrapperStyle={{}}
+                  wrapperClass=""
+                />
+              ) : (
+                <div
+                  className="cursor-pointer rounded-[5px] bg-[#E6CA62] px-2 py-0.5 font-urbanist font-bold text-black"
+                  onClick={() => {
+                    sendRequest.mutate({
+                      senderId: userId,
+                      receiverId: peopleId,
+                    });
+                  }}
+                >
+                  send request
+                </div>
+              )}
             </div>
           )}
         </div>
