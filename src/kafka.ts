@@ -10,8 +10,8 @@ const kafka = new Kafka({
     ca: [readFileSync(path.resolve("./ca.pem"), "utf-8")],
   },
   sasl: {
-    username: "avnadmin",
-    password: "AVNS_tEJEAYF9Tk8qD8LGaaL",
+    username: process.env.KAFKA_USERNAME,
+    password: process.env.KAFKA_PASSWORD,
     mechanism: "plain",
   },
 });
