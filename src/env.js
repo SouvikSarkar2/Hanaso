@@ -28,6 +28,8 @@ export const env = createEnv({
     DISCORD_CLIENT_SECRET: z.string(),
     GOOGLE_CLIENT_ID: z.string(),
     GOOGLE_CLIENT_SECRET: z.string(),
+    KAFKA_USERNAME: z.string(),
+    KAFKA_PASSWORD: z.string(),
   },
 
   /*
@@ -45,6 +47,8 @@ export const env = createEnv({
     DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+    KAFKA_USERNAME: process.env.KAFKA_USERNAME,
+    KAFKA_PASSWORD: process.env.KAFKA_PASSWORD,
   },
 
   skipValidation: !!process.env.SKIP_ENV_VALIDATION,

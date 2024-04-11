@@ -1,10 +1,9 @@
 import { redirect } from "next/navigation";
 import { getServerAuthSession } from "~/server/auth";
 import Sidebar from "./_components/Sidebar";
-
 import UserIdSetter from "../_components/userIdSetter";
-import { socket } from "~/socket";
 import { api } from "~/trpc/server";
+import { produceMessage } from "~/kafka";
 
 export default async function MainLayout({
   children,
