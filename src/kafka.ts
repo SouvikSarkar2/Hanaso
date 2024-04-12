@@ -102,7 +102,7 @@ async function uploadMessages(): Promise<void> {
     await api.conversation.addMessages(messageBuffer);
     console.log(messageBuffer);
     console.log("Bulk upload successful");
-    messageBuffer = []; // Clear the buffer after uploading
+    messageBuffer = [];
   } catch (error) {
     console.error("Error occurred during bulk upload:", error);
   }
