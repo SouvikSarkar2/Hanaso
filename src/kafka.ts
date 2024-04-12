@@ -42,7 +42,7 @@ export async function produceMessage(message: Message) {
   return true;
 }
 
-export async function startMessageConsumer(userId: string) {
+export async function startMessageConsumer() {
   const consumer = kafka.consumer({ groupId: "default" });
   await consumer.connect();
   await consumer.subscribe({ topic: "MESSAGES", fromBeginning: true });
@@ -53,7 +53,7 @@ export async function startMessageConsumer(userId: string) {
       if (!message.value) return;
       try {
         const parsedMessage = JSON.parse(message.value?.toString()) as Message;
-        if (parsedMessage.senderId !== userId) return;
+
         messageBuffer.push(parsedMessage);
         if (messageBuffer.length >= batchSize) {
           await uploadMessages();
@@ -95,11 +95,10 @@ async function handleUpload(): Promise<void> {
 
 async function uploadMessages(): Promise<void> {
   if (messageBuffer.length === 0) {
-    return; // No pending messages to upload
+    return;
   }
 
   try {
-    // Perform the bulk upload operation here
     await api.conversation.addMessages(messageBuffer);
     console.log(messageBuffer);
     console.log("Bulk upload successful");

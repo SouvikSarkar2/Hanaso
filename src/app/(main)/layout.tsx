@@ -16,8 +16,8 @@ export default async function MainLayout({
     redirect("/api/auth/signin");
   }
   const user = await api.user.find({ id: session.user.id });
-  const userId = user.id;
-  await startMessageConsumer(userId);
+
+  await startMessageConsumer();
   return (
     <div className="flex h-[100vh] w-[100vw] items-center justify-center bg-white dark:bg-[#202022]">
       <div className="flex h-[100%] w-[100%] bg-[#202022] dark:bg-[#FFFAE6]">

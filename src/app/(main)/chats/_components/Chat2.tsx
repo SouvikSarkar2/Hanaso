@@ -154,8 +154,6 @@ const Chat2 = ({
     socket.emit("sendMessage", messageData);
     setMessageList((list) => [...list, messageData]);
     setMessage("");
-
-    console.log(typeof messageData);
     await produceMessageHelper(messageData);
   };
   return (
