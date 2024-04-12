@@ -4,6 +4,11 @@ import path from "path";
 import { readFileSync } from "fs";
 import type { Message } from "./utils/Types";
 import { env } from "~/env";
+import { api } from "./trpc/server";
+
+const batchSize = 100;
+const flushInterval = 1000;
+let messageBuffer: Message[] = [];
 
 const kafka = new Kafka({
   brokers: ["kafka-2eedfb50-hanaso.b.aivencloud.com:19052"],
@@ -35,6 +40,73 @@ export async function produceMessage(message: Message) {
     topic: "MESSAGES",
   });
   return true;
+}
+
+export async function startMessageConsumer(userId: string) {
+  const consumer = kafka.consumer({ groupId: "default" });
+  await consumer.connect();
+  await consumer.subscribe({ topic: "MESSAGES", fromBeginning: true });
+
+  await consumer.run({
+    autoCommit: true,
+    eachMessage: async ({ message, pause }) => {
+      if (!message.value) return;
+      try {
+        const parsedMessage = JSON.parse(message.value?.toString()) as Message;
+        if (parsedMessage.senderId !== userId) return;
+        messageBuffer.push(parsedMessage);
+        if (messageBuffer.length >= batchSize) {
+          await uploadMessages();
+        }
+      } catch (err) {
+        console.log("Something is wrong");
+        pause();
+        setTimeout(() => {
+          consumer.resume([{ topic: "MESSAGES" }]);
+        }, 60 * 1000);
+      }
+    },
+  });
+}
+
+const intervalFunction = async () => {
+  try {
+    await handleUpload();
+  } catch (error) {
+    console.error("Error occurred during interval upload:", error);
+  }
+};
+
+const intervalWrapper = () => {
+  intervalFunction().catch((error) => {
+    console.error("Error occurred during interval upload:", error);
+  });
+};
+
+setInterval(intervalWrapper, flushInterval);
+
+async function handleUpload(): Promise<void> {
+  try {
+    await uploadMessages();
+  } catch (error) {
+    console.error("Error occurred during upload:", error);
+  }
+}
+
+async function uploadMessages(): Promise<void> {
+  if (messageBuffer.length === 0) {
+    return; // No pending messages to upload
+  }
+
+  try {
+    // Perform the bulk upload operation here
+    await api.conversation.addMessages(messageBuffer);
+    console.log(messageBuffer);
+    console.log("Bulk upload successful");
+    messageBuffer = []; // Clear the buffer after uploading
+  } catch (error) {
+    console.error("Error occurred during bulk upload:", error);
+  }
 }
 
 export default Kafka;

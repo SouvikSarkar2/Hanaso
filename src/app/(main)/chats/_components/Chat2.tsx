@@ -74,7 +74,7 @@ const Chat2 = ({
   useEffect(() => {
     messageEndRef.current?.scrollIntoView();
   }, [messageList]);
-  const addMessage = api.conversation.addMessage.useMutation({});
+
   useEffect(() => {
     if (users.includes(recipientId)) {
       setUserStatus("online");
@@ -154,7 +154,8 @@ const Chat2 = ({
     socket.emit("sendMessage", messageData);
     setMessageList((list) => [...list, messageData]);
     setMessage("");
-    addMessage.mutate(messageData);
+
+    console.log(typeof messageData);
     await produceMessageHelper(messageData);
   };
   return (

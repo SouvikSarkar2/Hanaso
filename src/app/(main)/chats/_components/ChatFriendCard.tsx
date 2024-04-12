@@ -49,10 +49,6 @@ const ChatFriendCard = ({
   }, [chatId, id, badge, decrementTotalBadge]);
   useEffect(() => {
     socket.on("receiveLastMessage", (data: Message) => {
-      console.log("senderId :", data.senderId);
-      console.log("selectedUser", id);
-      console.log("activeUser", userId);
-
       if (data.senderId === id || data.senderId === userId) {
         if (chatId !== data.senderId && data.senderId !== userId) {
           if (badge === 0) {

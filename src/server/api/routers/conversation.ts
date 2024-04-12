@@ -54,6 +54,31 @@ export const conversationRouter = createTRPCRouter({
         senderName: input.senderName,
       });
     }),
+  addMessages: protectedProcedure
+    .input(
+      z.array(
+        z.object({
+          conversationId: z.string(),
+          senderId: z.string(),
+          recipientId: z.string(),
+          content: z.string(),
+          senderName: z.string(),
+        }),
+      ),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const messageValues = input.map((message) => ({
+        content: message.content,
+        recipientId: message.recipientId,
+        senderId: message.senderId,
+        conversationId: message.conversationId,
+        id: sql`uuid_generate_v4()`,
+        senderName: message.senderName,
+      }));
+
+      await ctx.db.insert(messages).values(messageValues);
+    }),
+
   findConversationsOfUser: protectedProcedure
     .input(z.object({ id: z.string() }))
     .query(async ({ ctx, input }) => {
