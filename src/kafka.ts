@@ -11,7 +11,7 @@ const flushInterval = 1000;
 let messageBuffer: Message[] = [];
 
 const kafka = new Kafka({
-  brokers: ["kafka-2eedfb50-hanaso.b.aivencloud.com:19052"],
+  brokers: [env.KAFKA_BROKER],
   ssl: {
     ca: [readFileSync(path.resolve("./ca.pem"), "utf-8")],
   },

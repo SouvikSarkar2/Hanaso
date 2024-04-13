@@ -23,7 +23,7 @@ const PeopleCard = async ({
   });
 
   return (
-    <div className="flex h-full w-full items-center justify-center">
+    <div className="">
       <PeopleCardClient
         img={img}
         name={name}

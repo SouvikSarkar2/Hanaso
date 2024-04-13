@@ -1,7 +1,4 @@
-import { useEffect, useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
-import { Input } from "~/components/ui/input";
-import { socket } from "~/socket";
 import { useUserIdStore } from "~/store";
 import { api } from "~/trpc/react";
 import Chat2 from "./Chat2";

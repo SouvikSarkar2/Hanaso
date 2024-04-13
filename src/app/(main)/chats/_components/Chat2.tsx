@@ -237,7 +237,38 @@ const Chat2 = ({
       </div>
       <div className="flex h-[78%] w-full flex-col gap-3 overflow-y-scroll py-2 pl-4 pr-2">
         {messages.isLoading ? (
-          <Skeleton className="h-full w-full rounded-xl"></Skeleton>
+          <div className="h-full w-full rounded-xl">
+            <div className="flex h-[10%] w-full justify-end">
+              <Skeleton className="h-[60%] w-[30%] rounded-b-xl rounded-l-xl"></Skeleton>
+            </div>
+            <div className="flex h-[10%] w-full justify-start">
+              <Skeleton className="h-[60%] w-[20%] rounded-b-xl rounded-r-xl"></Skeleton>
+            </div>
+            <div className="flex h-[10%] w-full justify-end">
+              <Skeleton className="h-[60%] w-[10%] rounded-b-xl rounded-r-xl"></Skeleton>
+            </div>
+            <div className="flex h-[10%] w-full justify-start">
+              <Skeleton className="h-[60%] w-[25%] rounded-b-xl rounded-r-xl"></Skeleton>
+            </div>
+            <div className="flex h-[10%] w-full justify-end">
+              <Skeleton className="h-[60%] w-[30%] rounded-b-xl rounded-l-xl"></Skeleton>
+            </div>
+            <div className="flex h-[10%] w-full justify-start">
+              <Skeleton className="h-[60%] w-[20%] rounded-b-xl rounded-r-xl"></Skeleton>
+            </div>
+            <div className="flex h-[10%] w-full justify-end">
+              <Skeleton className="h-[60%] w-[10%] rounded-b-xl rounded-r-xl"></Skeleton>
+            </div>
+            <div className="flex h-[10%] w-full justify-start">
+              <Skeleton className="h-[60%] w-[25%] rounded-b-xl rounded-r-xl"></Skeleton>
+            </div>
+            <div className="flex h-[10%] w-full justify-end">
+              <Skeleton className="h-[60%] w-[10%] rounded-b-xl rounded-r-xl"></Skeleton>
+            </div>
+            <div className="flex h-[10%] w-full justify-start">
+              <Skeleton className="h-[60%] w-[25%] rounded-b-xl rounded-r-xl"></Skeleton>
+            </div>
+          </div>
         ) : (
           messageList.map((el) => (
             <div

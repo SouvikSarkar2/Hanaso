@@ -1,6 +1,6 @@
 "use client";
 
-import { X } from "lucide-react";
+import { Plus, X } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -44,35 +44,33 @@ const PeopleCardClient = ({
   });
 
   return (
-    <div className=" flex h-[90px] w-[90%] overflow-hidden rounded-xl bg-[#ffffff] dark:bg-[#202022]">
-      <div className=" h-full w-[30%] p-2 ">
-        <div className="relative h-full w-full overflow-hidden rounded-xl ">
+    <div className=" flex h-[155px] w-[148px] flex-col overflow-hidden rounded-xl bg-[#ffffff] dark:bg-[#202022]">
+      <div className=" h-[80%] w-full p-1 ">
+        <div className="relative h-[110px] w-[110px] overflow-hidden rounded-xl ">
           <Image src={img} alt="" fill />
         </div>
       </div>
-      <div className="flex h-full w-[70%] flex-col items-center justify-between">
-        <div className="flex w-full flex-wrap pl-2 pt-3 font-urbanist text-xl font-bold">
+      <div className="flex h-[20%] w-full  items-center justify-between">
+        <div className="text-md flex w-[70%] flex-wrap pl-2 font-urbanist font-bold">
           {name}
         </div>
-        <div className="flex  w-full items-center justify-end p-2">
+        <div className="flex  w-[30%] items-center justify-end pb-1 pr-1">
           {present ? (
             <div>
               {deleteRequest.isPending ? (
-                <div className="h-8 w-8 ">
-                  <Oval
-                    visible={true}
-                    height="20"
-                    width="20"
-                    color="#000000"
-                    secondaryColor="#ffffff"
-                    ariaLabel="oval-loading"
-                    wrapperStyle={{}}
-                    wrapperClass=""
-                  />
-                </div>
+                <Oval
+                  visible={true}
+                  height="20"
+                  width="20"
+                  color="#000000"
+                  secondaryColor="#ffffff"
+                  ariaLabel="oval-loading"
+                  wrapperStyle={{}}
+                  wrapperClass=""
+                />
               ) : (
                 <div
-                  className="cursor-pointer rounded-[5px] bg-red-500 px-1 py-0.5 font-bold text-black"
+                  className="cursor-pointer rounded-[10px] bg-red-500 p-0.5 font-bold text-black"
                   onClick={() => {
                     deleteRequest.mutate({
                       senderId: userId,
@@ -99,7 +97,7 @@ const PeopleCardClient = ({
                 />
               ) : (
                 <div
-                  className="cursor-pointer rounded-[5px] bg-[#E6CA62] px-2 py-0.5 font-urbanist font-bold text-black"
+                  className="cursor-pointer rounded-[10px] bg-[#E6CA62] p-0.5 font-urbanist font-bold text-black"
                   onClick={() => {
                     sendRequest.mutate({
                       senderId: userId,
@@ -107,7 +105,7 @@ const PeopleCardClient = ({
                     });
                   }}
                 >
-                  send request
+                  <Plus />
                 </div>
               )}
             </div>

@@ -30,6 +30,7 @@ export const env = createEnv({
     GOOGLE_CLIENT_SECRET: z.string(),
     KAFKA_USERNAME: z.string(),
     KAFKA_PASSWORD: z.string(),
+    KAFKA_BROKER: z.string(),
   },
 
   /*
@@ -49,6 +50,7 @@ export const env = createEnv({
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
     KAFKA_USERNAME: process.env.KAFKA_USERNAME,
     KAFKA_PASSWORD: process.env.KAFKA_PASSWORD,
+    KAFKA_BROKER: process.env.KAFKA_BROKER,
   },
 
   skipValidation: !!process.env.SKIP_ENV_VALIDATION,
