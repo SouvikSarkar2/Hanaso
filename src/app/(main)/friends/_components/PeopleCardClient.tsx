@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { socket } from "~/socket";
 import { api } from "~/trpc/react";
 import { Oval } from "react-loader-spinner";
+import { useEffect, useState } from "react";
 
 const PeopleCardClient = ({
   peopleId,
@@ -22,11 +23,12 @@ const PeopleCardClient = ({
   userId: string;
 }) => {
   const router = useRouter();
+  const [isPresent, SetIsPresent] = useState(present);
   const sendRequest = api.friend.request.useMutation({
     onSuccess: () => {
-      router.refresh();
       toast.success("Request Send");
       socket.emit("friendChanged", userId);
+      SetIsPresent(true);
     },
     onError: () => {
       toast.error("Error Sending Request");
@@ -34,7 +36,7 @@ const PeopleCardClient = ({
   });
   const deleteRequest = api.friend.rejectRequest.useMutation({
     onSuccess: () => {
-      router.refresh();
+      SetIsPresent(false);
       toast.success("Request Deleted");
       socket.emit("friendChanged", userId);
     },
@@ -55,7 +57,7 @@ const PeopleCardClient = ({
           {name}
         </div>
         <div className="flex  w-[30%] items-center justify-end pb-1 pr-1">
-          {present ? (
+          {isPresent ? (
             <div>
               {deleteRequest.isPending ? (
                 <Oval
