@@ -40,7 +40,7 @@ const RequestCard = ({
   }
 
   return (
-    <div className=" flex h-[50px] w-[350px]  overflow-hidden rounded-xl bg-[#202022] dark:bg-[#FFFAE621]">
+    <div className=" flex h-[50px] w-[350px]  overflow-hidden rounded-xl bg-[#202022] dark:bg-[#2E2E30] dark:text-black">
       <div className="flex h-full w-[50%] flex-row items-center  pl-2 font-medium">
         <div className="pl-2 font-urbanist text-lg font-bold text-[#E6CA62]">
           {name}

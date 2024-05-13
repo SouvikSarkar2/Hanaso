@@ -35,17 +35,17 @@ const page = async () => {
           <div className="h-[17%] w-full pr-2">
             <div className="flex h-full w-full flex-col rounded-b-xl bg-[#E6CA62]">
               <div className="flex h-[30%] w-full justify-end ">
-                <div className="h-full w-[86%] rounded-br-[20px] bg-white"></div>
-                <div className="h-full w-[12%] bg-white">
+                <div className="h-full w-[86%] rounded-br-[20px] bg-white dark:bg-[#202022]"></div>
+                <div className="h-full w-[12%] bg-white dark:bg-[#202022]">
                   <div className="flex h-full justify-center rounded-t-[20px] bg-[#E6CA62] px-4 font-urbanist text-2xl font-bold text-[#202022]">
                     <div className=""> requests</div>
                   </div>
                 </div>
-                <div className="h-full w-[2%] bg-[#E6CA62]">
-                  <div className="h-full w-full rounded-bl-[15px] bg-white"></div>
+                <div className="h-full w-[2%] bg-[#E6CA62] ">
+                  <div className="h-full w-full rounded-bl-[15px] bg-white dark:bg-[#202022]"></div>
                 </div>
               </div>
-              <div className="h-[70%] w-full bg-white">
+              <div className="h-[70%] w-full bg-white dark:bg-[#202022]">
                 <div className="scrollbar-w-2 scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar scrollbar-thumb-[#202022] scrollbar-track-[#E6CA62] flex h-full w-full items-center justify-start gap-2 overflow-y-hidden overflow-x-scroll rounded-xl bg-[#E6CA62] px-2">
                   {user.friendRequests.map((id) => (
                     <Request key={id} id={id} userId={userId} />

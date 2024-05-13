@@ -22,7 +22,12 @@ const PeopleCardClient = ({
   present: boolean;
   userId: string;
 }) => {
-  const router = useRouter();
+  const Router = useRouter();
+  useEffect(() => {
+    socket.on("friendChanged", () => {
+      Router.refresh();
+    });
+  }, [Router]);
   const [isPresent, SetIsPresent] = useState(present);
   const sendRequest = api.friend.request.useMutation({
     onSuccess: () => {

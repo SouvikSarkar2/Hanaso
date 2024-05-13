@@ -70,6 +70,15 @@ const Chat2 = ({
   const messages = api.conversation.findMessage.useQuery({
     conversationId: roomId,
   });
+  const deleteAllMessages = api.conversation.deleteAllMessages.useMutation({
+    onSuccess: async () => {
+      Router.refresh();
+      toast.success("All Messages Deleted");
+      socket.emit("friendChanged", senderId);
+      await messages.refetch();
+    },
+  });
+
   const messageEndRef: RefObject<HTMLDivElement> = useRef(null);
   useEffect(() => {
     messageEndRef.current?.scrollIntoView();
@@ -156,6 +165,7 @@ const Chat2 = ({
     setMessage("");
     await produceMessageHelper(messageData);
   };
+
   return (
     <div className="flex h-full w-full flex-col items-center justify-start ">
       <div className="flex h-[12%] w-full items-center justify-between border-b-2 border-b-black">
@@ -225,7 +235,35 @@ const Chat2 = ({
                   </AlertDialog>
                 </div>
                 <div className="w-full cursor-pointer rounded-[5px] py-1 pl-2 hover:bg-[#20202250]">
-                  Delete chat
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <div>Delete chat</div>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>
+                          Do you really want to delete all messages ?
+                        </AlertDialogTitle>
+                        <AlertDialogDescription>
+                          Deleting messages will result in deletion from both
+                          sides.All the chat data will be lost permanently
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel className="rounded-xl">
+                          Cancel
+                        </AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={() =>
+                            deleteAllMessages.mutate({ conversationId: roomId })
+                          }
+                          className="rounded-xl"
+                        >
+                          Continue
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
                 </div>
                 <div className="w-full cursor-pointer rounded-[5px] py-1 pl-2 hover:bg-[#20202250]">
                   Delete user
@@ -268,6 +306,10 @@ const Chat2 = ({
             <div className="flex h-[10%] w-full justify-start">
               <Skeleton className="h-[60%] w-[25%] rounded-b-xl rounded-r-xl"></Skeleton>
             </div>
+          </div>
+        ) : deleteAllMessages.isPending ? (
+          <div className="flex h-full w-full items-center justify-center text-xl font-bold italic text-red-500">
+            Deleting...
           </div>
         ) : (
           messageList.map((el) => (
